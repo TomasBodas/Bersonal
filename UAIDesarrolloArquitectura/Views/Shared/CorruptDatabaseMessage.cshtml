@@ -1,0 +1,33 @@
+﻿@using Services.Models
+<!DOCTYPE html>
+<html lang="es">
+@{
+    ViewBag.Title = "CorruptDatabaseMessage";
+}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>personal</title>
+    <link rel="stylesheet" href="~/Content/Site.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Chivo:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="centered-div">
+        <div class="message">
+            @if (true/*Services.SessionManager.GetInstance.User.isAdmin*/)
+            {
+                <p>La base de datos está corrupta. Elija como proceder.</p>
+                <button>Recalcular Dígitos Verificadores</button>
+                <button>Restaurar Base de Datos</button>
+                <button>Cancelar</button>
+            }
+            else
+            {
+                <p>Bersonal no está disponible en este momento. Vuelva más tarde y disculpe las molestias.</p>
+            }
+        </div>
+    </div>
+</body>
+</html>

@@ -182,3 +182,35 @@ footer {
     font-size: 14px;
     margin-top: 20px;
 }
+.centered-div {
+    height: 500px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.message {
+    display:block;
+    width: 500px;
+    margin: 0px 5px;
+    background-color:#dddddd;
+    border-radius:10px;
+    padding:10px;
+    text-align:center;  
+}
+.message p{
+    margin:0px;
+    font-size:15px;
+    padding:5px;
+}
+.message button{
+    background-color: rgb(30, 100, 196);
+    color:white;
+    border-radius:5px;
+    padding:5px;
+    border-style:none;
+}
+    .message button:hover {
+        background-color: rgb(34, 124, 222);
+        cursor:pointer;
+    }
+
