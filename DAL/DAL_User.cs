@@ -5,17 +5,18 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data.SqlClient;
 using Services.Models;
+using Services;
 
 namespace DAL
 {
     public class DAL_User
     {
+        private static readonly string CONNECTION_STRING = DataBaseServices.getConnectionString();
         private SqlDataReader sqlReader;
 
         public void RegisterUser(string Name, string Surname, int DNI, string Email, string HashPassword)
         {
-            string connectionString = "Data Source=.;Initial Catalog=Bersonal;Integrated Security=True";
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            using (SqlConnection connection = new SqlConnection(CONNECTION_STRING))
             {
                 try
                 {
@@ -39,8 +40,7 @@ namespace DAL
         }
         public void EventLog(int DNI, string fecha, string modulo, string descripcion)
         {
-            string connectionString = "Data Source=.;Initial Catalog=Bersonal;Integrated Security=True";
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            using (SqlConnection connection = new SqlConnection(CONNECTION_STRING))
             {
                 try
                 {
@@ -78,8 +78,7 @@ namespace DAL
         {
             User user = null;
 
-            string connectionString = "Data Source=.;Initial Catalog=Bersonal;Integrated Security=True";
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            using (SqlConnection connection = new SqlConnection(CONNECTION_STRING))
             {
                 connection.Open();
 

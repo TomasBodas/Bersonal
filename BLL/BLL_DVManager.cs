@@ -75,13 +75,11 @@ namespace BLL
 			return result.ToString();
 		}
 
-		public static async void actualizarDV()
+		public void actualizarDV()
 		{
-			await Task.Run(() =>
-			{
 				try
 				{
-					BLL_DVManager.borrarErrores();
+					borrarErrores();
 
 					foreach (string tabla in dal.obtenerTablas())
 					{
@@ -89,17 +87,16 @@ namespace BLL
 						dal.actualizarDVV(tabla);
 					}
 					DAL_User dalUser = new DAL_User();
-					dalUser.EventLog(SessionManager.GetInstance.User.id, DateTime.Now.ToString(), "Actualizacion de DV", "Actualizacion de DV");
+					dalUser.EventLog(0, DateTime.Now.ToString(), "Actualizacion de DV", "Actualizacion de DV");
 
 				}
 				catch (Exception ex)
 				{
 					Console.WriteLine(ex);
 				}
-			});
 		}
 
-		private static void borrarErrores()
+		public void borrarErrores()
 		{
 			errores.Clear();
 		}

@@ -28,9 +28,10 @@ namespace UAIDesarrolloArquitectura.Controllers
             if (ModelState.IsValid)
             {
                 DAL_User dal_usuarios = new DAL_User();
+                BLL_DVManager bll_dvmanager = new BLL_DVManager();
                 string Hash = PasswordEncrypter.EncryptPassword(Password);
                 dal_usuarios.RegisterUser(Name, Surname, DNI, Email, Hash);
-                BLL_DVManager.actualizarDV();
+                bll_dvmanager.actualizarDV();
                 dal_usuarios.EventLog(DNI, DateTime.Now.ToString(), "Registro", "Se creó una cuenta");
                 // Your registration logic here, e.g., save to database, etc.
 

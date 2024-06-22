@@ -13,7 +13,7 @@ namespace UAIDesarrolloArquitectura.Controllers
     {
         public ActionResult ErrorDV()
         {
-            return View("ErrorDV");
+            return View("CorruptDatabaseMessage");
         }
         public ActionResult Backup()
         {

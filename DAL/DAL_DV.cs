@@ -176,7 +176,7 @@ namespace DAL
 				List<string> names = new List<string>();
 				while (data.Read())
 				{
-					names.Add(data["tableName"].ToString());
+					names.Add(data["nombreTabla"].ToString());
 				}
 				sqlConnection.Close();
 

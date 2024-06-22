@@ -164,6 +164,7 @@
     <Content Include="Views\Shared\Login.cshtml" />
     <Content Include="Views\Register\Register.cshtml" />
     <Content Include="Views\Shared\Plans.cshtml" />
+    <Content Include="Views\Shared\CorruptDatabaseMessage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
