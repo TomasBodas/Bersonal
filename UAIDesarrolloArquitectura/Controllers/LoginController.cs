@@ -38,13 +38,12 @@ namespace UAIDesarrolloArquitectura.Controllers
                         {
                             //Singleton setup
                             SessionManager.login(user);
-                            dalUser.EventLog(user.DNI, DateTime.Now.ToString(), "Inicio de sesión", "Se inició sesión");
-                            return RedirectToAction("ErrorDV", "Backup");
                             //DV Check
                             if (!BLL_DVManager.verificarDV())
                             {
                                 return RedirectToAction("ErrorDV", "Backup");
                             }
+                            else dalUser.EventLog(user.DNI, DateTime.Now.ToString(), "Inicio de sesión", "Se inició sesión");
 
                         }
                         else throw new Exception();

@@ -21,7 +21,7 @@ namespace DAL
                 try
                 {
                     connection.Open();
-                    string query = "INSERT INTO usuario (nombre, apellido, DNI, email, contrasena) VALUES (@Nombre, @Apellido, @DNI, @Email, @Contraseña)";
+                    string query = "INSERT INTO usuario (nombre, apellido, DNI, email, contrasena, isadmin) VALUES (@Nombre, @Apellido, @DNI, @Email, @Contraseña, @IsAdmin)";
                     using (SqlCommand command = new SqlCommand(query, connection))
                     {
                         command.Parameters.AddWithValue("@Nombre", Name);
@@ -29,6 +29,7 @@ namespace DAL
                         command.Parameters.AddWithValue("@DNI", DNI);
                         command.Parameters.AddWithValue("@Email", Email);
                         command.Parameters.AddWithValue("@Contraseña", HashPassword);
+                        command.Parameters.AddWithValue("@IsAdmin", false);
                         command.ExecuteNonQuery();
                     }
                 }
@@ -82,7 +83,7 @@ namespace DAL
             {
                 connection.Open();
 
-                string query = $"SELECT id, nombre, apellido, DNI, email, contrasena FROM usuario WHERE email = '{email}'";
+                string query = $"SELECT id, nombre, apellido, DNI, email, contrasena, isAdmin FROM usuario WHERE email = '{email}'";
 
 
                 using (SqlCommand command = new SqlCommand(query, connection))
@@ -92,12 +93,16 @@ namespace DAL
                     {
                         while (sqlReader.Read())
                         {
-                            user = new User(new object[] {(int) sqlReader[0],
-                                                    (string) sqlReader[1],
-                                                    (string) sqlReader[2],
-                            (int) sqlReader[3],
-                            (string) sqlReader[4],
-                            (string) sqlReader[5],});
+                            user = new User(new object[] 
+                            {
+                                (int) sqlReader[0],
+                                (string) sqlReader[1],
+                                (string) sqlReader[2],
+                                (int) sqlReader[3],
+                                (string) sqlReader[4],
+                                (string) sqlReader[5],
+                                (bool) sqlReader[6]
+                            });
                         }
                     }
                     sqlReader.Close();

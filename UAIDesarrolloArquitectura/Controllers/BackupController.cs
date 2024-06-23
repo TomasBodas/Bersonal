@@ -6,6 +6,8 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using System.Windows;
+
 
 namespace UAIDesarrolloArquitectura.Controllers
 {
@@ -17,7 +19,8 @@ namespace UAIDesarrolloArquitectura.Controllers
         }
         public ActionResult Backup()
         {
-            return View("Backup");
+            DataBaseServices.BackupDatabase();
+            return View("Index");
         }
     }
 }

@@ -20,14 +20,20 @@
         @if (Services.SessionManager.IsLogged())
         {
             <a href="@Url.Action("Logout", "Home")">Cerrar Sesión</a>
+            if (Services.SessionManager.GetInstance.User.IsAdmin)
+            {
+                <a href="@Url.Action("Backup", "Backup")">Respaldar Base de Datos</a>
+            }
+
         }
         else
         {
             <a href="@Url.Action("Login", "Login")">Iniciar Sesión</a>
         }
+
     </nav>
     <header>
-        <h1>Personal</h1>
+        <h1>Bersonal</h1>
     </header>
     <nav>
         <a class="active" href="/pages/contacto.html">Internet</a>
