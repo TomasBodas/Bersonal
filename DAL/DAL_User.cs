@@ -21,7 +21,7 @@ namespace DAL
                 try
                 {
                     connection.Open();
-                    string query = "INSERT INTO usuario (nombre, apellido, DNI, email, contrasena, isadmin) VALUES (@Nombre, @Apellido, @DNI, @Email, @Contraseña, @IsAdmin)";
+                    string query = "INSERT INTO usuario (nombre, apellido, DNI, email, contrasena, isAdmin) VALUES (@Nombre, @Apellido, @DNI, @Email, @Contraseña, @IsAdmin)";
                     using (SqlCommand command = new SqlCommand(query, connection))
                     {
                         command.Parameters.AddWithValue("@Nombre", Name);
@@ -29,7 +29,8 @@ namespace DAL
                         command.Parameters.AddWithValue("@DNI", DNI);
                         command.Parameters.AddWithValue("@Email", Email);
                         command.Parameters.AddWithValue("@Contraseña", HashPassword);
-                        command.Parameters.AddWithValue("@IsAdmin", false);
+                        if (Name == "admin") command.Parameters.AddWithValue("@IsAdmin", true);
+                        else command.Parameters.AddWithValue("@IsAdmin", false);
                         command.ExecuteNonQuery();
                     }
                 }

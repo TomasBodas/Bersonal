@@ -31,7 +31,6 @@ namespace BLL
 			{
 				errorMsg = "Error in row:" + row;
 				errores.Add(errorMsg);
-				User user = SessionManager.GetInstance.User;
 				SessionManager sm = new SessionManager();
 				DAL_User dalUser = new DAL_User();
 				dalUser.EventLog(0, DateTime.Now.ToString(), "ERROR DE DVH", "ERROR DE DVH");

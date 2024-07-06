@@ -16,12 +16,10 @@
 <body>
     <div class="centered-div">
         <div class="message">
-            @if (true/*Services.SessionManager.GetInstance.User.isAdmin*/)
+            @if (Services.SessionManager.GetInstance != null && Services.SessionManager.GetInstance.User.IsAdmin)
             {
-                <p>La base de datos está corrupta. Elija como proceder.</p>
-                <button>Recalcular Dígitos Verificadores</button>
+                <p>La base de datos está corrupta.</p>
                 <button>Restaurar Base de Datos</button>
-                <button>Cancelar</button>
             }
             else
             {
