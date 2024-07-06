@@ -22,5 +22,11 @@ namespace UAIDesarrolloArquitectura.Controllers
             DataBaseServices.BackupDatabase();
             return View("Index");
         }
+
+        public ActionResult Restore()
+        {
+            DataBaseServices.BackupDatabase();
+            return View("");
+        }
     }
 }

@@ -19,11 +19,16 @@
             @if (Services.SessionManager.GetInstance != null && Services.SessionManager.GetInstance.User.IsAdmin)
             {
                 <p>La base de datos está corrupta.</p>
-                <button>Restaurar Base de Datos</button>
+                <p>Restaurar base de datos</p>
+                using (Html.BeginForm("Restore", "Backup", FormMethod.Post))
+                {
+                    <input type="file" name="file" id="file" />
+                    <input type="submit" value="Upload" />
+                }
             }
             else
             {
-                <p>Bersonal no está disponible en este momento. Vuelva más tarde y disculpe las molestias.</p>
+                < p > Bersonal no está disponible en este momento. Vuelva más tarde y disculpe las molestias.</ p >
             }
         </div>
     </div>
