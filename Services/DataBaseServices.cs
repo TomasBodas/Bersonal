@@ -31,7 +31,27 @@ namespace Services
                 }
                 return true;
             } catch (Exception ex) { throw ex; }
-           
+        }
+        public static void RestoreDatabase(string pRoute)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(CONNECTION_STRING))
+                {
+                    connection.Open();
+                    SqlCommand command = new SqlCommand("alter database Bersonal set offline with rollback immediate", connection);
+                    command.ExecuteNonQuery();
+                    command = new SqlCommand($"RESTORE DATABASE Bersonal FROM DISK = '{pRoute}'", connection);
+                    command.ExecuteNonQuery();
+                    command = new SqlCommand("alter database Bersonal set online", connection);
+                    command.ExecuteNonQuery();
+                    Console.WriteLine("Restauración exitosa.");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error durante la restauración: {ex.Message}");
+            }
         }
     }
 }

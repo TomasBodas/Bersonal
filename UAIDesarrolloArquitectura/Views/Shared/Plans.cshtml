@@ -6,11 +6,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>personal</title>
+    <title>Bersonal</title>
     <link rel="stylesheet" href="~/Content/Site.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Chivo:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <script>
+        let addToCart = (planName, price) => {
+            let cart = JSON.parse(sessionStorage.getItem('cart')) || [];
+            let plan = { name: planName, price: price };
+            cart.push(plan);
+            sessionStorage.setItem('cart', JSON.stringify(cart));
+            alert('Producto agregado al carrito');
+        }
+    </script>
 </head>
 
 <body>
@@ -18,6 +27,7 @@
         @if (Services.SessionManager.IsLogged())
         {
             <a href="@Url.Action("Logout", "Home")">Cerrar Sesión</a>
+            <a href="@Url.Action("Carrito", "Carrito")">Carrito</a>
         }
         else
         {
@@ -25,7 +35,7 @@
         }
     </nav>
     <header>
-        <h1>Personal</h1>
+        <h1>Bersonal</h1>
     </header>
     <nav>
         <a href="@Url.Action("Index", "Home")">Internet</a>
@@ -45,12 +55,44 @@
                 <p class="list-price">Precio de lista <span class="strikethrough">$21.500</span></p>
                 <p class="final-price">$8.600 <span>final por mes</span></p>
             </div>
-            <button class="cta-button">¡Lo quiero!</button>
+            <button onclick = "addToCart('Plan de 3GB','8600')" class="cta-button">¡Lo quiero!</button>
             <p class="discount">60% OFF por 6 meses</p>
             <ul class="features">
                 <li>Roaming: WhatsApp gratis + 2 GB extra en limítrofes y EE.UU</li>
                 <li>Enviá mensajes de WhatsApp sin consumir datos de tu plan</li>
                 <li>3 GB para navegar en tu celu</li>
+            </ul>
+            <a href="#" class="learn-more">Conocer más ></a>
+            <p class="footer-note">¡Incluye WhatsApp gratis y llamadas ilimitadas!</p>
+        </div>
+        <div class="card">
+            <div class="card-header">
+                <h2 class="h2-plans">Móvil 5 GB</h2>
+                <p class="list-price">Precio de lista <span class="strikethrough">$31.300</span></p>
+                <p class="final-price">$15.500 <span>final por mes</span></p>
+            </div>
+            <button onclick = "addToCart('Plan de 5GB','15500')" class="cta-button">¡Lo quiero!</button>
+            <p class="discount">50% OFF por 6 meses</p>
+            <ul class="features">
+                <li>Roaming: WhatsApp gratis + 3 GB extra en América</li>
+                <li>SMS ilimitados y llamadas a América a precio local</li>
+                <li>5 GB para navegar en tu celu</li>
+            </ul>
+            <a href="#" class="learn-more">Conocer más ></a>
+            <p class="footer-note">¡Incluye WhatsApp gratis y llamadas ilimitadas!</p>
+        </div>
+        <div class="card">
+            <div class="card-header">
+                <h2 class="h2-plans">Móvil 10 GB</h2>
+                <p class="list-price">Precio de lista <span class="strikethrough">$45.200</span></p>
+                <p class="final-price">$22.600 <span>final por mes</span></p>
+            </div>
+            <button onclick = "addToCart('Plan de 10GB','22600')" class="cta-button">¡Lo quiero!</button>
+            <p class="discount">50% OFF por 6 meses</p>
+            <ul class="features">
+                <li>Roaming: WhatsApp gratis + 5 GB extra en América</li>
+                <li>Guardá los gigas sobrantes para el mes siguiente</li>
+                <li>Flow Pass: 10 GB gratis por mes para disfrutar en la app de Flow</li>
             </ul>
             <a href="#" class="learn-more">Conocer más ></a>
             <p class="footer-note">¡Incluye WhatsApp gratis y llamadas ilimitadas!</p>

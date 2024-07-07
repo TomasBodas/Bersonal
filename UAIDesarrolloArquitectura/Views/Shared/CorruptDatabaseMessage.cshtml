@@ -22,13 +22,15 @@
                 <p>Restaurar base de datos</p>
                 using (Html.BeginForm("Restore", "Backup", FormMethod.Post))
                 {
-                    <input type="file" name="file" id="file" />
-                    <input type="submit" value="Upload" />
+                    <label for="file">Seleccione un archivo</label>
+                    <input type="file" name="route" id="file"/>
+                    <br />
+                    <input type="submit" value="Restaurar" />
                 }
             }
             else
             {
-                < p > Bersonal no está disponible en este momento. Vuelva más tarde y disculpe las molestias.</ p >
+                <p> Bersonal no está disponible en este momento. Vuelva más tarde y disculpe las molestias.</p>
             }
         </div>
     </div>

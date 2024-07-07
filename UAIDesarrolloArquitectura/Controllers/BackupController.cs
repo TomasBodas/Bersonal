@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using System.Windows;
+using UAIDesarrolloArquitectura.Models.ViewModel;
 
 
 namespace UAIDesarrolloArquitectura.Controllers
@@ -22,11 +23,11 @@ namespace UAIDesarrolloArquitectura.Controllers
             DataBaseServices.BackupDatabase();
             return View("Index");
         }
-
-        public ActionResult Restore()
+        [HttpPost]
+        public ActionResult Restore(string route)
         {
-            DataBaseServices.BackupDatabase();
-            return View("");
+            DataBaseServices.RestoreDatabase(route);
+            return View("Index");
         }
     }
 }
