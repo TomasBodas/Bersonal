@@ -13,11 +13,16 @@
     <link href="https://fonts.googleapis.com/css2?family=Chivo:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <script>
         let addToCart = (planName, price) => {
-            let cart = JSON.parse(sessionStorage.getItem('cart')) || [];
-            let plan = { name: planName, price: price };
-            cart.push(plan);
-            sessionStorage.setItem('cart', JSON.stringify(cart));
-            alert('Producto agregado al carrito');
+            let logged =  "@Services.SessionManager.IsLogged()";
+            if (logged == "True") {
+                let cart = JSON.parse(sessionStorage.getItem('cart')) || [];
+                let plan = { name: planName, price: price };
+                cart.push(plan);
+                sessionStorage.setItem('cart', JSON.stringify(cart));
+                alert('Producto agregado al carrito');
+            }
+            else alert('Debe iniciar sesión para agregar productos al carrito');
+            
         }
     </script>
 </head>
