@@ -18,6 +18,10 @@ namespace UAIDesarrolloArquitectura.Controllers
         DAL_Log dAL_Log = new DAL_Log();
         public ActionResult Bitacora()
         {
+            if (!SessionManager.IsLogged())
+            {
+                return RedirectToAction("Login", "Login");
+            }
             List<Log> list = dAL_Log.getLog();
             return View(list);
         }

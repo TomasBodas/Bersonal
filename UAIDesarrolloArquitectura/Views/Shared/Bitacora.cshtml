@@ -3,7 +3,7 @@
     ViewBag.Title = "Biatcora";
 }
 
-<!DOCTYPE html>
+    <!DOCTYPE html>
 
 <html>
 <head>
@@ -20,6 +20,7 @@
             overflow-y: auto;
             border: 1px solid #ddd;
         }
+
         table {
             width: 80%;
             margin: auto;
@@ -69,7 +70,7 @@
         Filtrar por fecha:
         @using (Html.BeginForm("Bitacora", "Bitacora", FormMethod.Post))
         {
-            @Html.Label("Desde ")<input type="date" name="fechaInicio" required/>@Html.Label("hasta ")<input type="date" name="fechaFinal" required />
+            @Html.Label("Desde ")<input type="date" name="fechaInicio" required />@Html.Label("hasta ")<input type="date" name="fechaFinal" required />
             <button type="submit">Filtrar</button>
         }
         <table>

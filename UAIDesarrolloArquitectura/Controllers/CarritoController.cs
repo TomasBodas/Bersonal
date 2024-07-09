@@ -16,6 +16,10 @@ namespace UAIDesarrolloArquitectura.Controllers
     {
         public ActionResult Carrito()
         {
+            if (!SessionManager.IsLogged())
+            {
+                return RedirectToAction("Login", "Login");
+            }
             return View("Carrito");
         }
     }

@@ -16,6 +16,10 @@ namespace UAIDesarrolloArquitectura.Controllers
     {
         public ActionResult ErrorDV()
         {
+            if (!SessionManager.IsLogged())
+            {
+                return RedirectToAction("Login", "Login");
+            }
             return View("CorruptDatabaseMessage");
         }
         public ActionResult Backup()
