@@ -1,0 +1,102 @@
+﻿@model IEnumerable<Services.Models.Log>
+@{
+    ViewBag.Title = "Biatcora";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bitacora</title>
+    <link rel="stylesheet" href="~/Content/Site.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Chivo:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <style>
+        .contenedor-tabla {
+            max-height: 400px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+        }
+        table {
+            width: 80%;
+            margin: auto;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="preheader">
+        @if (Services.SessionManager.IsLogged())
+        {
+            <a href="@Url.Action("Logout", "Home")">Cerrar Sesión</a>
+            if (Services.SessionManager.GetInstance.User.IsAdmin)
+            {
+                <a href="@Url.Action("Backup", "Backup")">Respaldar Base de Datos</a>
+                <a href="#">Bitácora</a>
+            }
+            <a href="@Url.Action("Carrito", "Carrito")">Carrito</a>
+        }
+        else
+        {
+            <a href="@Url.Action("Login", "Login")">Iniciar Sesión</a>
+        }
+    </nav>
+    <header>
+        <h1>Bersonal</h1>
+    </header>
+    <nav>
+        <a @Url.Action("Index", "Home")>Internet</a>
+        <a href="https://es.euronews.com/noticias/internacional">Tienda</a>
+        <a href="https://es.euronews.com/business">Portabilidad</a>
+        <a href="@Url.Action("Plans", "Home")">Planes</a>
+        <a href="https://es.euronews.com/green">TV</a>
+    </nav>
+    <div class="contenedor-tabla">
+        Filtrar por fecha:
+        @using (Html.BeginForm("Bitacora", "Bitacora", FormMethod.Post))
+        {
+            @Html.Label("Desde ")<input type="date" name="fechaInicio" required/>@Html.Label("hasta ")<input type="date" name="fechaFinal" required />
+            <button type="submit">Filtrar</button>
+        }
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Usuario</th>
+                    <th>Dia</th>
+                    <th>Hora</th>
+                    <th>Modulo</th>
+                    <th>Descripcion</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var eventlog in Model)
+                {
+                    <tr>
+                        <td>@eventlog.id</td>
+                        <td>@eventlog.User</td>
+                        <td>@eventlog.Fecha.ToString().Split(' ')[0]</td>
+                        <td>@eventlog.Fecha.ToString().Split(' ')[1]</td>
+                        <td>@eventlog.Modulo</td>
+                        <td>@eventlog.Descripcion</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataBaseServices.cs" />
+    <Compile Include="Models\Log.cs" />
     <Compile Include="PasswordEncrypter.cs" />
     <Compile Include="SessionManager.cs" />
     <Compile Include="Models\User.cs" />
