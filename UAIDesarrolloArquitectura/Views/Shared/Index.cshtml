@@ -1,4 +1,5 @@
 ﻿@using Services.Models
+@model UAIDesarrolloArquitectura.Models.ViewModel.BackupViewModel
 <!DOCTYPE html>
 <html lang="es">
 @{
@@ -14,6 +15,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Chivo:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 </head>
+    
 
 <body>
     <nav class="preheader">
@@ -31,7 +33,6 @@
         {
             <a href="@Url.Action("Login", "Login")">Iniciar Sesión</a>
         }
-
     </nav>
     <header>
         <h1>Bersonal</h1>
@@ -43,6 +44,12 @@
         <a href="@Url.Action("Plans", "Home")">Planes</a>
         <a href="https://es.euronews.com/green">TV</a>
     </nav>
+    @if (Model != null && Model.BackupSuccess)
+    {
+        <script>
+            alert("@Model.Message");
+        </script>
+    }
     <div class="container">
         <div class="container">
             <div id="descripcion">

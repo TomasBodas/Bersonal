@@ -12,26 +12,61 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Chivo:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <style>
+        a {
+            background-color: rgb(30, 100, 196);
+            color: white;
+            border-radius: 5px;
+            padding: 5px;
+            border-style: none;
+            text-decoration:none;
+        }
+
+        .contenedor-botones-restore{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 5px;
+        }
+        .contenedor-botones {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size:12px
+        }
+    </style>
 </head>
+
 <body>
     <div class="centered-div">
         <div class="message">
             @if (Services.SessionManager.GetInstance != null && Services.SessionManager.GetInstance.User.IsAdmin)
             {
-                <p>La base de datos está corrupta.</p>
-                <p>Restaurar base de datos</p>
+                <p>La base de datos está corrupta. Elija cómo proceder</p>
                 using (Html.BeginForm("Restore", "Backup", FormMethod.Post))
                 {
-                    <label for="file">Seleccione un archivo</label>
-                    <input type="file" name="route" id="file"/>
-                    <br />
-                    <input type="submit" value="Restaurar" />
+                    <div class="contenedor-botones">
+                        <div class="contenedor-botones-restore">
+                            <label for="file">Seleccione un archivo</label>
+                            <input type="file" name="route" id="file" />
+                            <br />
+                            <input type="submit" value="Restaurar" />
+                        </div>
+                        <div>
+                            <a href="@Url.Action("Login", "Login")">Recalcular Dígitos Verificadores</a>
+                        </div>
+                        <div>
+                            <a href="@Url.Action("Login", "Login")">Salir</a>
+                        </div>
+                    </div>
                 }
             }
             else
             {
                 <p> Bersonal no está disponible en este momento. Vuelva más tarde y disculpe las molestias.</p>
+                <a href="@Url.Action("Login", "Login")">Salir</a>
             }
+
         </div>
     </div>
 </body>
