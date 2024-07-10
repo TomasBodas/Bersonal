@@ -68,10 +68,10 @@ namespace DAL
 			{
 				List<string> result = new List<string>();
 
-				string selectDVH = $"SELECT * FROM {tabla}";
-				SqlCommand query = new SqlCommand(selectDVH, sqlConnection);
+				string selectAllRows = $"SELECT * FROM {tabla}";
+				SqlCommand command = new SqlCommand(selectAllRows, sqlConnection);
 				sqlConnection.Open();
-				SqlDataReader data = query.ExecuteReader();
+				SqlDataReader data = command.ExecuteReader();
 
 				var dvhs = new System.Text.StringBuilder();
 				int row = 1;

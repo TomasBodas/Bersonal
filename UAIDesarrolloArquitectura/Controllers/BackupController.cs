@@ -1,4 +1,6 @@
-﻿using DAL;
+﻿using Antlr.Runtime.Tree;
+using BLL;
+using DAL;
 using Services;
 using System;
 using System.Collections.Generic;
@@ -22,7 +24,8 @@ namespace UAIDesarrolloArquitectura.Controllers
             {
                 return RedirectToAction("Login", "Login");
             }
-            return View("CorruptDatabaseMessage");
+
+            return View("CorruptDatabaseMessage", BLL_DVManager.obtenerErrores() as object);
         }
         public ActionResult Backup()
         {
@@ -35,10 +38,16 @@ namespace UAIDesarrolloArquitectura.Controllers
             return View("Index", model);
         }
         [HttpPost]
-        public ActionResult Restore(string route)
+        public ActionResult Restore(string path)
         {
-            DataBaseServices.RestoreDatabase(route);
-            return View("Index");
+            //Le pide al que se encarga de la base de datos de restaurarla mandandole la ruta del archivo que necesita
+            //El encargado le dice si se puedo hacer o no
+            bool IsSuccess = DataBaseServices.RestoreDatabase(path);
+            //El controlador notifica en el diccionario en la clave IsSuccess si se pudo hacer o no para que la vista lo obtenga
+            ViewData["IsSuccess"] = IsSuccess;
+            //Llamamos a la vista CorruptDatabaseMessage
+            return View("CorruptDatabaseMessage");
+
         }
     }
 }

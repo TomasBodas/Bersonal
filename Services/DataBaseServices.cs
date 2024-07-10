@@ -34,25 +34,40 @@ namespace Services
                 return true;
             } catch (Exception ex) { throw ex; }
         }
-        public static void RestoreDatabase(string pRoute)
+        public static bool RestoreDatabase(string pPath)
         {
             try
             {
+                //Creamos una conexion a la base de datos
                 using (SqlConnection connection = new SqlConnection(CONNECTION_STRING))
                 {
+                    //Abrir la conexión
                     connection.Open();
+                    //Ponemos la base de datos en estado offline
                     SqlCommand command = new SqlCommand("alter database Bersonal set offline with rollback immediate", connection);
                     command.ExecuteNonQuery();
-                    command = new SqlCommand($"RESTORE DATABASE Bersonal FROM DISK = '{pRoute}'", connection);
-                    command.ExecuteNonQuery();
+                    try
+                    {
+                        //Intentamos restaurarla base de datos
+                        command = new SqlCommand($"RESTORE DATABASE Bersonal FROM DISK = '{pPath}'", connection);
+                        command.ExecuteNonQuery();
+                    }
+                    catch(Exception exRestore)
+                    {
+                        // Intentamos poner la base de datos online nuevamente
+                        SqlCommand onlineCommand = new SqlCommand("ALTER DATABASE Bersonal SET ONLINE", connection);
+                        onlineCommand.ExecuteNonQuery();
+                        return false;
+                    }
                     command = new SqlCommand("alter database Bersonal set online", connection);
                     command.ExecuteNonQuery();
-                    Console.WriteLine("Restauración exitosa.");
                 }
+                return true;
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Error durante la restauración: {ex.Message}");
+                return false;
             }
         }
     }

@@ -1,4 +1,5 @@
 ﻿@using Services.Models
+@model object
 <!DOCTYPE html>
 <html lang="es">
 @{
@@ -19,20 +20,25 @@
             border-radius: 5px;
             padding: 5px;
             border-style: none;
-            text-decoration:none;
+            text-decoration: none;
         }
 
-        .contenedor-botones-restore{
+            a:hover {
+                background-color: #0056b3;
+            }
+
+        .contenedor-botones-restore {
             display: flex;
             justify-content: center;
             align-items: center;
             gap: 5px;
         }
+
         .contenedor-botones {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size:12px
+            font-size: 12px
         }
     </style>
 </head>
@@ -42,24 +48,50 @@
         <div class="message">
             @if (Services.SessionManager.GetInstance != null && Services.SessionManager.GetInstance.User.IsAdmin)
             {
-                <p>La base de datos está corrupta. Elija cómo proceder</p>
-                using (Html.BeginForm("Restore", "Backup", FormMethod.Post))
-                {
-                    <div class="contenedor-botones">
+                <p>La base de datos está corrupta.</p>
+                <p> Lista de errores: @Model</p>
+                <p>Elija cómo proceder</p>
+
+
+                <div class="contenedor-botones">
+                    <form action="/Backup/Restore" method="post">
                         <div class="contenedor-botones-restore">
-                            <label for="file">Seleccione un archivo</label>
-                            <input type="file" name="route" id="file" />
+                            <input type="text" name="path" placeholder="Ingrese la ruta del archivo de respaldo" />
                             <br />
                             <input type="submit" value="Restaurar" />
+                            @*Si en el diccionario existe una entrada con la clave isSuccess*@
+                            @if (ViewData["isSuccess"] != null)
+                            {
+                                
+                                <script type="text/javascript">
+                                    //Si se pudo hacer
+                                    if (@ViewData["isSuccess"].ToString().ToLower())
+                                    {
+                                        //Mostramos un mensaje confirmandolo
+                                        alert('La restauración fue un éxito');
+                                        //Llamamos a la vista login
+                                        window.location.href = '@Url.Action("Login", "Login")';
+                                    }
+                                    //Si se pudo hacer
+                                    else
+                                    {
+                                        //Mostramos un mensaje confirmandolo y nos quedamos acá
+                                        alert('Hubo un error al restaurar de la base de datos. Verifique la ruta del archivo de respaldo')
+                                    }
+
+                                </script>
+                            }
                         </div>
-                        <div>
-                            <a href="@Url.Action("Login", "Login")">Recalcular Dígitos Verificadores</a>
-                        </div>
-                        <div>
-                            <a href="@Url.Action("Login", "Login")">Salir</a>
-                        </div>
+
+                    </form>
+                    <div>
+                        <a href="@Url.Action("Login", "Login")">Recalcular Dígitos Verificadores</a>
                     </div>
-                }
+                    <div>
+                        <a href="@Url.Action("Login", "Login")">Salir</a>
+                    </div>
+                </div>
+
             }
             else
             {
