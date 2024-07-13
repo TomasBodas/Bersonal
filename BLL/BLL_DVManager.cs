@@ -17,6 +17,7 @@ namespace BLL
 
 		public static bool verificarDVH(string tabla)
 		{
+			errores.Clear();
 			List<string> rows = dal.verificarDVH(tabla);
 
 			if (rows.Count == 0)
@@ -41,7 +42,8 @@ namespace BLL
 
 		public static bool verificarDV()
 		{
-			bool ok = true;
+            errores.Clear();
+            bool ok = true;
 
 			foreach (string tabla in dal.obtenerTablas())
 			{
@@ -63,7 +65,7 @@ namespace BLL
 			return ok;
 		}
 
-		public static string obtenerErrores()
+		public static List<string> obtenerErrores()
 		{
 			var result = new System.Text.StringBuilder();
 			foreach (string error in errores)
@@ -71,7 +73,7 @@ namespace BLL
 				result.Append(error + "\n");
 			}
 
-			return result.ToString();
+			return errores;
 		}
 
 		public void actualizarDV()

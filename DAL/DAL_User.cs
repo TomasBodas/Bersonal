@@ -40,30 +40,18 @@ namespace DAL
                 }
             }
         }
-        public void EventLog(int DNI, string fecha, string modulo, string descripcion)
+        public void EventLog(int id, string fecha, string modulo, string descripcion)
         {
             using (SqlConnection connection = new SqlConnection(CONNECTION_STRING))
             {
                 try
                 {
                     connection.Open();
-                    string select = $"SELECT id from usuario where DNI = {DNI}";
-                    int id_usuario = 0;
-                    using (SqlCommand command = new SqlCommand(select, connection))
-                    {
-                        using (SqlDataReader reader = command.ExecuteReader())
-                        {
-                            while (reader.Read())
-                            {
-                                id_usuario = reader.GetInt32(0);
-                            }
-                        }
-                    }
                     string query = "INSERT INTO bitacora (fecha, FK_usuario_bitacora, modulo, descripcion) VALUES (@Fecha, @Id_Usuario, @Modulo, @Descripcion)";
                     using (SqlCommand command = new SqlCommand(query, connection))
                     {
                         command.Parameters.AddWithValue("@Fecha", fecha);
-                        command.Parameters.AddWithValue("@Id_Usuario", id_usuario);
+                        command.Parameters.AddWithValue("@Id_Usuario", id);
                         command.Parameters.AddWithValue("@Modulo", modulo);
                         command.Parameters.AddWithValue("@Descripcion", descripcion);
                         command.ExecuteNonQuery();

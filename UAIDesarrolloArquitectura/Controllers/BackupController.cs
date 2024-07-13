@@ -25,7 +25,7 @@ namespace UAIDesarrolloArquitectura.Controllers
                 return RedirectToAction("Login", "Login");
             }
 
-            return View("CorruptDatabaseMessage", BLL_DVManager.obtenerErrores() as object);
+            return View("CorruptDatabaseMessage", BLL_DVManager.obtenerErrores());
         }
         public ActionResult Backup()
         {

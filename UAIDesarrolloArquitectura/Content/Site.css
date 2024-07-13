@@ -217,4 +217,12 @@ footer {
         background-color: rgb(34, 124, 222);
         cursor:pointer;
     }
+    .message ul{
+        width:fit-content;
+        margin: auto;
+    }
+    message li{
+        text-align:left;
+        font-size:12px;
+    }
 

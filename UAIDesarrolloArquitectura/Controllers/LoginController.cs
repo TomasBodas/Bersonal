@@ -18,6 +18,7 @@ namespace UAIDesarrolloArquitectura.Controllers
         [HttpGet]
         public ActionResult Login()
         {
+            SessionManager.logout();
             return View("Login");
         }
 
@@ -43,7 +44,7 @@ namespace UAIDesarrolloArquitectura.Controllers
                             {
                                 return RedirectToAction("ErrorDV", "Backup");
                             }
-                            else dalUser.EventLog(user.DNI, DateTime.Now.ToString(), "Inicio de sesión", "Se inició sesión");
+                            else dalUser.EventLog(user.id, DateTime.Now.ToString(), "Inicio de sesión", "Se inició sesión");
 
                         }
                         else throw new Exception();

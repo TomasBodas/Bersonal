@@ -1,5 +1,5 @@
 ﻿@using Services.Models
-@model object
+@model List<string>
 <!DOCTYPE html>
 <html lang="es">
 @{
@@ -46,13 +46,17 @@
 <body>
     <div class="centered-div">
         <div class="message">
-            @if (Services.SessionManager.GetInstance != null && Services.SessionManager.GetInstance.User.IsAdmin)
+            @if (Services.SessionManager.GetInstance != null && Services.SessionManager.GetInstance.User.Name=="webmaster")
             {
                 <p>La base de datos está corrupta.</p>
-                <p> Lista de errores: @Model</p>
+                <p> Lista de errores: </p>
+                <ul>
+            @foreach(var error in Model)
+                {
+                    <li>@error</li>
+                }
+                </ul>
                 <p>Elija cómo proceder</p>
-
-
                 <div class="contenedor-botones">
                     <form action="/Backup/Restore" method="post">
                         <div class="contenedor-botones-restore">
