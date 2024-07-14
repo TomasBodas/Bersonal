@@ -25,12 +25,10 @@ namespace BLL
 				return true;
 			}
 
-			string errorMsg = "Error de DVH en la tabla:" + tabla;
-			errores.Add(errorMsg);
 
 			foreach (string row in rows)
 			{
-				errorMsg = "Error en la fila:" + row;
+				string errorMsg = "Se modificó la fila: " + row + " de la tabla " + tabla;
 				errores.Add(errorMsg);
 				SessionManager sm = new SessionManager();
 				DAL_User dalUser = new DAL_User();
@@ -50,7 +48,7 @@ namespace BLL
 				if (!dal.verificarDVV(tabla))
 				{
 					ok = false;
-					string errorMsg = "Error de DVV en la tabla:" + tabla;
+					string errorMsg = "Se eliminó un registro en la tabla:" + tabla;
 					errores.Add(errorMsg);
 					SessionManager sm = new SessionManager();
 					DAL_User dalUser = new DAL_User();
