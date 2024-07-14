@@ -22,8 +22,12 @@ namespace UAIDesarrolloArquitectura.Controllers
             {
                 return RedirectToAction("Login", "Login");
             }
-            List<Log> list = dAL_Log.getLog();
-            return View(list);
+            if (SessionManager.GetInstance.User.Name == "admin")
+            {
+                List<Log> list = dAL_Log.getLog();
+                return View(list);
+            }
+            else return RedirectToAction("Index", "Home");
         }
         [HttpPost]
         public ActionResult Bitacora(DateTime Fechainicio, DateTime Fechafinal)

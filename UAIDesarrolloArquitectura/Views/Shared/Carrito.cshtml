@@ -102,10 +102,13 @@
         @if (Services.SessionManager.IsLogged())
         {
             <a href="@Url.Action("Logout", "Home")">Cerrar Sesión</a>
-            if (Services.SessionManager.GetInstance.User.IsAdmin)
+            if (Services.SessionManager.GetInstance.User.Name == "admin")
+            {
+                <a href="@Url.Action("Bitacora", "Bitacora")">Bitácora</a>
+            }
+            if (Services.SessionManager.GetInstance.User.Name == "webmaster")
             {
                 <a href="@Url.Action("Backup", "Backup")">Respaldar Base de Datos</a>
-                <a href="@Url.Action("Bitacora", "Bitacora")">Bitácora</a>
             }
             <a href="#">Carrito</a>
         }
