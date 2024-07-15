@@ -98,19 +98,23 @@
     </style>
 </head>
 <body>
-    <nav class="preheader">
+    <nav class="barra">
         @if (Services.SessionManager.IsLogged())
         {
-            <a href="@Url.Action("Logout", "Home")">Cerrar Sesión</a>
-            if (Services.SessionManager.GetInstance.User.Name == "admin")
-            {
-                <a href="@Url.Action("Bitacora", "Bitacora")">Bitácora</a>
-            }
-            if (Services.SessionManager.GetInstance.User.Name == "webmaster")
-            {
-                <a href="@Url.Action("Backup", "Backup")">Respaldar Base de Datos</a>
-            }
-            <a href="#">Carrito</a>
+            <div class="opciones">
+                <a href="@Url.Action("Logout", "Home")">Cerrar Sesión</a>
+                <a href="@Url.Action("Index", "Home")">Inicio</a>
+                @if (Services.SessionManager.GetInstance.User.Name == "admin")
+                {
+                    <a href="@Url.Action("Bitacora", "Bitacora")">Bitácora</a>
+                }
+                @if (Services.SessionManager.GetInstance.User.Name == "webmaster")
+                {
+                    <a href="@Url.Action("Backup", "Backup")">Respaldar Base de Datos</a>
+                }
+                <a href="#">Carrito</a>
+            </div>
+            <p style='color:black'>Bienvenido, @Services.SessionManager.GetInstance.User.Name</p>
         }
         else
         {

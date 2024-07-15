@@ -32,7 +32,7 @@ namespace UAIDesarrolloArquitectura.Controllers
                 string Hash = PasswordEncrypter.EncryptPassword(Password);
                 dal_usuarios.RegisterUser(Name, Surname, DNI, Email, Hash);
                 bll_dvmanager.actualizarDV();
-                dal_usuarios.EventLog(DNI, DateTime.Now.ToString(), "Registro", "Se creó una cuenta");
+                dal_usuarios.EventLog(0, DateTime.Now.ToString(), "Registro", "Se creó una cuenta");
                 // Your registration logic here, e.g., save to database, etc.
 
 
