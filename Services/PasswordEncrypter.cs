@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -28,6 +29,83 @@ namespace Services
                 }
                 //Se devuelve como resultado
                 return sb.ToString();
+            }
+        }
+
+        public static string EncryptData(string password)
+        {
+            string keys = "8hFfpJj/z9m5tpfr5O/xkA1eMzxQLF9Y3e4dUFL9eSk=";
+            string ivs = "7Q67SD9gIQY4i/vsJgguIw==";
+
+            byte[] key = Convert.FromBase64String(keys);
+            byte[] iv = Convert.FromBase64String(ivs);
+
+            if (string.IsNullOrEmpty(password))
+                throw new ArgumentNullException(nameof(password));
+
+            if (key == null || key.Length != 32)
+                throw new ArgumentException("Key must be 32 bytes long after Base64 decoding", nameof(key));
+
+            if (iv == null || iv.Length != 16)
+                throw new ArgumentException("IV must be 16 bytes long after Base64 decoding", nameof(iv));
+
+            using (AesManaged aes = new AesManaged())
+            {
+                aes.Key = key;
+                aes.IV = iv;
+
+                ICryptoTransform encryptor = aes.CreateEncryptor(aes.Key, aes.IV);
+
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    using (CryptoStream cs = new CryptoStream(ms, encryptor, CryptoStreamMode.Write))
+                    {
+                        using (StreamWriter sw = new StreamWriter(cs))
+                        {
+                            sw.Write(password);
+                        }
+                    }
+
+                    byte[] encryptedBytes = ms.ToArray();
+                    return Convert.ToBase64String(encryptedBytes);
+                }
+            }
+        }
+
+        public static string DecryptData(string encryptedPassword)
+        {
+            string keys = "8hFfpJj/z9m5tpfr5O/xkA1eMzxQLF9Y3e4dUFL9eSk=";
+            string ivs = "7Q67SD9gIQY4i/vsJgguIw==";
+
+            byte[] key = Convert.FromBase64String(keys);
+            byte[] iv = Convert.FromBase64String(ivs);
+
+            if (string.IsNullOrEmpty(encryptedPassword))
+                throw new ArgumentNullException(nameof(encryptedPassword));
+
+            if (key == null || key.Length != 32)
+                throw new ArgumentException("Key must be 32 bytes long after Base64 decoding", nameof(key));
+
+            if (iv == null || iv.Length != 16)
+                throw new ArgumentException("IV must be 16 bytes long after Base64 decoding", nameof(iv));
+
+            using (AesManaged aes = new AesManaged())
+            {
+                aes.Key = key;
+                aes.IV = iv;
+
+                ICryptoTransform decryptor = aes.CreateDecryptor(aes.Key, aes.IV);
+
+                using (MemoryStream ms = new MemoryStream(Convert.FromBase64String(encryptedPassword)))
+                {
+                    using (CryptoStream cs = new CryptoStream(ms, decryptor, CryptoStreamMode.Read))
+                    {
+                        using (StreamReader sr = new StreamReader(cs))
+                        {
+                            return sr.ReadToEnd();
+                        }
+                    }
+                }
             }
         }
     }

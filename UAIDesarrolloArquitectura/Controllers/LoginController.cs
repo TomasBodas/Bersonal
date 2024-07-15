@@ -31,7 +31,7 @@ namespace UAIDesarrolloArquitectura.Controllers
                 {
                     User user;
                     DAL_User dalUser = new DAL_User();
-                    string emailHash = PasswordEncrypter.EncryptPassword(model.Email);
+                    string emailHash = PasswordEncrypter.EncryptData(model.Email);
                     user = dalUser.findByEmail(emailHash);
                     string Hash = PasswordEncrypter.EncryptPassword(model.Password);
                     if (user != null)
