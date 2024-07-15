@@ -115,7 +115,6 @@ namespace DAL
 				catch (Exception e)
 				{
 					DAL_User dalUser = new DAL_User();
-					dalUser.EventLog(SessionManager.GetInstance.User.id, DateTime.Now.ToString(), "Error de actualizacion de DVV", "Error de actualizacion de DVV");
 				}
 			}
 		}
@@ -160,7 +159,6 @@ namespace DAL
 				catch (Exception e)
 				{
 					DAL_User dalUser = new DAL_User();
-					dalUser.EventLog(SessionManager.GetInstance.User.id, DateTime.Now.ToString(), "Error de actualizacion de DVH", "Error de actualizacion de DVH");
 				}
 			}
 		}
@@ -185,19 +183,17 @@ namespace DAL
 		}
 		public bool isForeignKey(string colName)
 		{
-			if (colName.Length < 4)
+			if (colName.Length < 3)
 			{
 				return false;
 			}
 
-			if (colName.Substring(1, 3).Equals("FK_"))
+			if (colName.Substring(0, 3).Equals("FK_", StringComparison.OrdinalIgnoreCase))
 			{
 				return true;
 			}
 
 			return false;
 		}
-
-
 	}
 }

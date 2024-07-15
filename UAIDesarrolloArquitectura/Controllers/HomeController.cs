@@ -1,4 +1,5 @@
-﻿using DAL;
+﻿using BLL;
+using DAL;
 using Services;
 using System;
 using System.Collections.Generic;
@@ -28,7 +29,9 @@ namespace UAIDesarrolloArquitectura.Controllers
         {
             
             DAL_User dalUser = new DAL_User();
-            dalUser.EventLog(SessionManager.GetInstance.User.DNI, DateTime.Now.ToString(), "Cierre de sesión", "Se cerró sesión");
+            dalUser.EventLog(SessionManager.GetInstance.User.id, DateTime.Now.ToString(), "Cierre de sesión", "Se cerró sesión");
+            BLL_DVManager bll_dvmanager = new BLL_DVManager();
+            bll_dvmanager.actualizarDV();
             SessionManager.logout();
             return View("Index");
         }

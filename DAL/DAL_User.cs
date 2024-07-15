@@ -29,7 +29,7 @@ namespace DAL
                         command.Parameters.AddWithValue("@DNI", DNI);
                         command.Parameters.AddWithValue("@Email", Email);
                         command.Parameters.AddWithValue("@Contraseña", HashPassword);
-                        if (Name == "admin") command.Parameters.AddWithValue("@IsAdmin", true);
+                        if (Name == "webmaster") command.Parameters.AddWithValue("@IsAdmin", true);
                         else command.Parameters.AddWithValue("@IsAdmin", false);
                         command.ExecuteNonQuery();
                     }
@@ -51,7 +51,14 @@ namespace DAL
                     using (SqlCommand command = new SqlCommand(query, connection))
                     {
                         command.Parameters.AddWithValue("@Fecha", fecha);
-                        command.Parameters.AddWithValue("@Id_Usuario", id);
+                        if (id == 0)
+                        {
+                            command.Parameters.AddWithValue("@Id_Usuario", DBNull.Value);
+                        }
+                        else
+                        {
+                            command.Parameters.AddWithValue("@Id_Usuario", id);
+                        }
                         command.Parameters.AddWithValue("@Modulo", modulo);
                         command.Parameters.AddWithValue("@Descripcion", descripcion);
                         command.ExecuteNonQuery();

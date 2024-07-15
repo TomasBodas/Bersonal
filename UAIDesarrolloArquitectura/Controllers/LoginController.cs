@@ -40,11 +40,13 @@ namespace UAIDesarrolloArquitectura.Controllers
                             //Singleton setup
                             SessionManager.login(user);
                             //DV Check
+                            BLL_DVManager bll_dvmanager = new BLL_DVManager();
                             if (!BLL_DVManager.verificarDV())
                             {
                                 return RedirectToAction("ErrorDV", "Backup");
                             }
                             else dalUser.EventLog(user.id, DateTime.Now.ToString(), "Inicio de sesión", "Se inició sesión");
+                            bll_dvmanager.actualizarDV();
 
                         }
                         else throw new Exception();

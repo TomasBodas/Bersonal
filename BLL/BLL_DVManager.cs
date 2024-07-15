@@ -31,8 +31,6 @@ namespace BLL
 				string errorMsg = "Se modificó la fila: " + row + " de la tabla " + tabla;
 				errores.Add(errorMsg);
 				SessionManager sm = new SessionManager();
-				DAL_User dalUser = new DAL_User();
-				dalUser.EventLog(0, DateTime.Now.ToString(), "ERROR DE DVH", "ERROR DE DVH");
 			}
 
 			return false;
@@ -51,8 +49,6 @@ namespace BLL
 					string errorMsg = "Se eliminó un registro en la tabla:" + tabla;
 					errores.Add(errorMsg);
 					SessionManager sm = new SessionManager();
-					DAL_User dalUser = new DAL_User();
-					dalUser.EventLog(0, DateTime.Now.ToString(), "ERROR DE DVV", "ERROR DE DVV");
 				}
 				if (!verificarDVH(tabla))
 				{
@@ -85,8 +81,6 @@ namespace BLL
 						dal.actualizarDVH(tabla);
 						dal.actualizarDVV(tabla);
 					}
-					DAL_User dalUser = new DAL_User();
-					dalUser.EventLog(0, DateTime.Now.ToString(), "Actualizacion de DV", "Actualizacion de DV");
 
 				}
 				catch (Exception ex)

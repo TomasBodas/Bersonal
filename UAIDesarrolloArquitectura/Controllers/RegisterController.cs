@@ -7,6 +7,7 @@ using System.Web.Mvc;
 using BLL;
 using DAL;
 using Services;
+using Services.Models;
 
 namespace UAIDesarrolloArquitectura.Controllers
 {
@@ -31,8 +32,9 @@ namespace UAIDesarrolloArquitectura.Controllers
                 BLL_DVManager bll_dvmanager = new BLL_DVManager();
                 string Hash = PasswordEncrypter.EncryptPassword(Password);
                 dal_usuarios.RegisterUser(Name, Surname, DNI, Email, Hash);
+                User user = dal_usuarios.findByEmail(Email);
+                dal_usuarios.EventLog(user.id, DateTime.Now.ToString(), "Registro", "Se creó una cuenta");
                 bll_dvmanager.actualizarDV();
-                dal_usuarios.EventLog(DNI, DateTime.Now.ToString(), "Registro", "Se creó una cuenta");
                 // Your registration logic here, e.g., save to database, etc.
 
 
