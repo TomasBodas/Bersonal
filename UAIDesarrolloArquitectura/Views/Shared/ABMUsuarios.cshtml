@@ -1,11 +1,9 @@
-﻿@model IEnumerable<Services.Models.Log>
-
+﻿@model List<Services.Models.User>
 @{
-    ViewBag.Title = "Biatcora";
+    ViewBag.Title = "ABM";
 }
 
 <!DOCTYPE html>
-
 <html>
 <head>
     <meta charset="UTF-8">
@@ -37,9 +35,20 @@
         th {
             background-color: #f2f2f2;
         }
+        .btnRemover {
+            padding: 10px;
+            background-color: rgb(30, 100, 196);
+            color: white;
+            align-items: center;
+            border-style: none;
+        }
+
+            .btnRemover:hover {
+                background-color: rgb(34, 124, 222);
+                cursor: pointer;
+            }
     </style>
 </head>
-
 <body>
     <nav class="barra">
         @if (Services.SessionManager.IsLogged())
@@ -49,8 +58,8 @@
                 <a href="@Url.Action("Index", "Home")">Inicio</a>
                 @if (Services.SessionManager.GetInstance.User.Name == "admin")
                 {
-                    <a href="#">Bitácora</a>
-                    <a href="@Url.Action("ABM", "ABM")">Gestión de usuarios</a>
+                    <a href="@Url.Action("Bitacora", "Bitacora")">Bitácora</a>
+                    <a href="#">Gestión de usuarios</a>
                 }
                 @if (Services.SessionManager.GetInstance.User.Name == "webmaster")
                 {
@@ -75,34 +84,40 @@
         <a href="@Url.Action("Plans", "Home")">Planes</a>
         <a href="https://es.euronews.com/green">TV</a>
     </nav>
+    <button class="btnRemover">Crear Usuario</button>
+    <br />
     <div class="contenedor-tabla">
-        Filtrar por fecha:
-        @using (Html.BeginForm("Bitacora", "Bitacora", FormMethod.Post))
-        {
-            @Html.Label("Desde ")<input type="date" name="fechaInicio" required />@Html.Label("hasta ")<input type="date" name="fechaFinal" required />
-            <button type="submit">Filtrar</button>
-        }
         <table>
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Usuario</th>
-                    <th>Dia</th>
-                    <th>Hora</th>
-                    <th>Modulo</th>
-                    <th>Descripcion</th>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>DNI</th>
+                    <th>Email</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach (var eventlog in Model)
+                @foreach (var user in Model)
                 {
                     <tr>
-                        <td>@eventlog.id</td>
-                        <td>@eventlog.User</td>
-                        <td>@eventlog.Fecha.ToString().Split(' ')[0]</td>
-                        <td>@eventlog.Fecha.ToString().Split(' ')[1]</td>
-                        <td>@eventlog.Modulo</td>
-                        <td>@eventlog.Descripcion</td>
+                        <td>@user.id</td>
+                        <td>@user.Name</td>
+                        <td>@user.Surname</td>
+                        <td>@user.DNI</td>
+                        <td>@user.Email</td>
+                        <td>
+                            <form action="@Url.Action("Borrar", "ABM")" method="post">
+                                <input type="hidden" name="Id" value="@user.id" />
+                                <button class="btnRemover" type="submit">Modificar</button>
+                            </form>
+                        </td>
+                        <td>
+                            <form action="@Url.Action("Borrar", "ABM")" method="post">
+                                <input type="hidden" name="Id" value="@user.id" />
+                                <button class="btnRemover" type="submit">Borrar</button>
+                            </form>
+                        </td>
                     </tr>
                 }
             </tbody>

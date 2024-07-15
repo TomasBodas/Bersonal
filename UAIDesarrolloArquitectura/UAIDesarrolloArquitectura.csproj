@@ -120,6 +120,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\ABMController.cs" />
     <Compile Include="Controllers\BitacoraController.cs" />
     <Compile Include="Controllers\CarritoController.cs" />
     <Compile Include="Controllers\BackupController.cs" />
@@ -171,6 +172,7 @@
     <Content Include="Views\Shared\CorruptDatabaseMessage.cshtml" />
     <Content Include="Views\Shared\Carrito.cshtml" />
     <Content Include="Views\Shared\Bitacora.cshtml" />
+    <Content Include="Views\Shared\ABMUsuarios.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

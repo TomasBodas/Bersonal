@@ -22,10 +22,11 @@
         @if (Services.SessionManager.IsLogged())
         {
             <div class="opciones">
-                <a href="@Url.Action("Logout", "Home")">Cerrar Sesión</a>   
+                <a href="@Url.Action("Logout", "Home")">Cerrar Sesión</a>
                 @if (Services.SessionManager.GetInstance.User.Name == "admin")
                 {
                     <a href="@Url.Action("Bitacora", "Bitacora")">Bitácora</a>
+                    <a href="@Url.Action("ABMUsuarios", "ABM")">Gestión de usuarios</a>
                 }
                 @if (Services.SessionManager.GetInstance.User.Name == "webmaster")
                 {

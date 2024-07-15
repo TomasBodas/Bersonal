@@ -107,6 +107,7 @@
                 @if (Services.SessionManager.GetInstance.User.Name == "admin")
                 {
                     <a href="@Url.Action("Bitacora", "Bitacora")">Bitácora</a>
+                    <a href="@Url.Action("ABM", "ABM")">Gestión de usuarios</a>
                 }
                 @if (Services.SessionManager.GetInstance.User.Name == "webmaster")
                 {
