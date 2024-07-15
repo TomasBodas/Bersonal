@@ -28,7 +28,7 @@ namespace BLL
 
 			foreach (string row in rows)
 			{
-				string errorMsg = "Se modificó la fila: " + row + " de la tabla " + tabla;
+				string errorMsg = "Se modificó la fila " + row + " de la tabla " + tabla;
 				errores.Add(errorMsg);
 				SessionManager sm = new SessionManager();
 			}

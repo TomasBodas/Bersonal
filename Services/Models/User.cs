@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Policy;
 using System.Web;
 
 namespace Services.Models
@@ -17,6 +18,7 @@ namespace Services.Models
         public int Attempts { get; set; }
         public bool IsAdmin { get; set; }
 
+        public User() { }
         public User(object[] itemArray) : base()
         {
             this.id = (int)itemArray[0];

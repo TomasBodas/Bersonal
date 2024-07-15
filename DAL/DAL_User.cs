@@ -112,5 +112,44 @@ namespace DAL
             if (inputPassword != Hash) return false;
             else return true;
         }
+        List<User> listUsers = new List<User>();
+        public List<User> getUsers()
+        {
+            using (SqlConnection connection = new SqlConnection(CONNECTION_STRING))
+            {
+
+                string select = "SELECT id, nombre, apellido, dni, email FROM usuario";
+                SqlCommand command = new SqlCommand(select, connection);
+                connection.Open();
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        User user = new User
+                        {
+                            id = reader.GetInt32(0),
+                            Name = reader.GetString(1),
+                            Surname = reader.GetString(2),
+                            DNI = reader.GetInt32(3),
+                            Email = reader.GetString(4)
+                        };
+                        listUsers.Add(user);
+                    }
+                }
+            }
+            return listUsers;
+        }
+        public void DeleteUser(User user)
+        {
+            using (SqlConnection connection = new SqlConnection(CONNECTION_STRING))
+            {
+                string select = $"DELETE FROM usuario WHERE id={user.id}";
+                SqlCommand command = new SqlCommand(select, connection);
+                connection.Open();
+                command.ExecuteNonQuery();
+                DAL_DV dal_dv = new DAL_DV();
+                dal_dv.actualizarDVV("usuario");
+            }
+        }
     }
 }
