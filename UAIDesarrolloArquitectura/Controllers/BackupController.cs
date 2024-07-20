@@ -24,8 +24,7 @@ namespace UAIDesarrolloArquitectura.Controllers
             {
                 return RedirectToAction("Login", "Login");
             }
-
-            return View("CorruptDatabaseMessage", BLL_DVManager.obtenerErrores());
+            return View("CorruptDatabaseMessage", BLL_CheckDigitsManager.GetErrors());
         }
         public ActionResult Backup()
         {
@@ -47,7 +46,13 @@ namespace UAIDesarrolloArquitectura.Controllers
             ViewData["IsSuccess"] = IsSuccess;
             //Llamamos a la vista CorruptDatabaseMessage
             return View("CorruptDatabaseMessage");
-
+        }
+        public ActionResult SetCheckDigits()
+        {
+            BLL_CheckDigitsManager checkDigitsManager = new BLL_CheckDigitsManager();
+            checkDigitsManager.SetCheckDigits();
+            ViewData["SetCheckDigitsIsSuccess"] = true;
+            return View("CorruptDatabaseMessage");
         }
     }
 }

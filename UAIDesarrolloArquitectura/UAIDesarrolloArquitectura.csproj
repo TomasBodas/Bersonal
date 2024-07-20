@@ -136,6 +136,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="assets\Bersonal.png" />
+    <Content Include="assets\user-image-with-black-background-svgrepo-com.svg" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />

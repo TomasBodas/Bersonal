@@ -34,11 +34,16 @@
                 }
                 <a href="@Url.Action("Carrito", "Carrito")">Carrito</a>
             </div>
-            <p style='color:black'>Bienvenido, @Services.SessionManager.GetInstance.User.Name</p>
+            <div class="opciones">
+                <img src="~/assets/user-image-with-black-background-svgrepo-com.svg" width="30px" />
+                <p style='color: black; white-space: nowrap;'>Bienvenido, @Services.SessionManager.GetInstance.User.Name</p>
+            </div>
+
         }
         else
         {
             <a href="@Url.Action("Login", "Login")">Iniciar Sesión</a>
+            <a href="@Url.Action("Register", "Register")">Registrarse</a>
         }
     </nav>
     <header>
@@ -51,12 +56,6 @@
         <a href="@Url.Action("Plans", "Home")">Planes</a>
         <a href="https://es.euronews.com/green">TV</a>
     </nav>
-    @if (Model != null && Model.BackupSuccess)
-    {
-        <script>
-            alert("@Model.Message");
-        </script>
-    }
     <div class="container">
         <div class="container">
             <div id="descripcion">

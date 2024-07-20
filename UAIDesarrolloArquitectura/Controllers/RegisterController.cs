@@ -15,7 +15,12 @@ namespace UAIDesarrolloArquitectura.Controllers
     {
         public ActionResult Register()
         {
-            return View("Register");
+            BLL_CheckDigitsManager checkDigitsManager = new BLL_CheckDigitsManager();
+            if (!checkDigitsManager.CheckDigits())
+            {
+                return View("Login");
+            }
+            else return View("Register");
         }
 
         [HttpPost]
@@ -28,13 +33,13 @@ namespace UAIDesarrolloArquitectura.Controllers
             }
             if (ModelState.IsValid)
             {
-                DAL_User dal_usuarios = new DAL_User();
-                BLL_DVManager bll_dvmanager = new BLL_DVManager();
+                DAL_User dalUser = new DAL_User();
+                BLL_CheckDigitsManager checkDigitsManager = new BLL_CheckDigitsManager();
                 string Hash = PasswordEncrypter.EncryptPassword(Password);
-                dal_usuarios.RegisterUser(Name, Surname, DNI, Email, Hash);
-                User user = dal_usuarios.findByEmail(Email);
-                dal_usuarios.EventLog(user.id, DateTime.Now.ToString(), "Registro", "Se creó una cuenta");
-                bll_dvmanager.actualizarDV();
+                dalUser.RegisterUser(Name, Surname, DNI, Email, Hash);
+                User user = dalUser.findByEmail(Email);
+                dalUser.EventLog(user.id, DateTime.Now.ToString(), "Registro", "Se creó una cuenta");
+                checkDigitsManager.SetCheckDigits();
                 // Your registration logic here, e.g., save to database, etc.
 
 

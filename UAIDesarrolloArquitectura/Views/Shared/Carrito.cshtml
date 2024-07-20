@@ -9,7 +9,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>personal</title>
     <link rel="stylesheet" href="~/Content/Site.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -82,7 +81,7 @@
             border: 3px solid rgb(30, 100, 196);
             align-items: center;
             justify-content:center;
-            margin: 15px;
+            margin: 10px auto;
         }
         .btnRemover {
             padding: 10px;
@@ -115,7 +114,10 @@
                 }
                 <a href="#">Carrito</a>
             </div>
-            <p style='color:black'>Bienvenido, @Services.SessionManager.GetInstance.User.Name</p>
+            <div class="opciones">
+                <img src="~/assets/user-image-with-black-background-svgrepo-com.svg" width="30px" />
+                <p style='color: black; white-space: nowrap;'>Bienvenido, @Services.SessionManager.GetInstance.User.Name</p>
+            </div>
         }
         else
         {

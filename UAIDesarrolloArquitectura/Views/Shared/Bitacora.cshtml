@@ -10,7 +10,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bitacora</title>
+    <title>Bitácora</title>
     <link rel="stylesheet" href="~/Content/Site.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -50,7 +50,7 @@
                 @if (Services.SessionManager.GetInstance.User.Name == "admin")
                 {
                     <a href="#">Bitácora</a>
-                    <a href="@Url.Action("ABM", "ABM")">Gestión de usuarios</a>
+                    <a href="@Url.Action("ABMUsuarios", "ABM")">Gestión de usuarios</a>
                 }
                 @if (Services.SessionManager.GetInstance.User.Name == "webmaster")
                 {
@@ -58,7 +58,10 @@
                 }
                 <a href="@Url.Action("Carrito", "Carrito")">Carrito</a>
             </div>
-            <p style='color:black'>Bienvenido, @Services.SessionManager.GetInstance.User.Name</p>
+            <div class="opciones">
+                <img src="~/assets/user-image-with-black-background-svgrepo-com.svg" width="30px" />
+                <p style='color: black; white-space: nowrap;'>Bienvenido, @Services.SessionManager.GetInstance.User.Name</p>
+            </div>
         }
         else
         {

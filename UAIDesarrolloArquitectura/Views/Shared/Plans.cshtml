@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bersonal</title>
+    <title>Planes</title>
     <link rel="stylesheet" href="~/Content/Site.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -45,11 +45,15 @@
                 }
                 <a href="@Url.Action("Carrito", "Carrito")">Carrito</a>
             </div>
-            <p style='color:black'>Bienvenido, @Services.SessionManager.GetInstance.User.Name</p>
+            <div class="opciones">
+                <img src="~/assets/user-image-with-black-background-svgrepo-com.svg" width="30px" />
+                <p style='color: black; white-space: nowrap;'>Bienvenido, @Services.SessionManager.GetInstance.User.Name</p>
+            </div>
         }
         else
         {
             <a href="@Url.Action("Login", "Login")">Iniciar Sesión</a>
+            <a href="@Url.Action("Register", "Register")">Registrarse</a>
         }
     </nav>
     <header>

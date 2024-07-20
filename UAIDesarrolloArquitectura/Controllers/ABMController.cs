@@ -1,4 +1,5 @@
-﻿using DAL;
+﻿using BLL;
+using DAL;
 using Services;
 using Services.Models;
 using System;
@@ -30,11 +31,32 @@ namespace UAIDesarrolloArquitectura.Controllers
             else return RedirectToAction("Index", "Home");
         }
         [HttpPost]
-        public ActionResult Borrar(User user)
+        public ActionResult AddUser(string Name, string Surname, int DNI, string Email, string Password)
+        {
+            string Hash = PasswordEncrypter.EncryptPassword(Password);
+            dal_user.RegisterUser(Name, Surname, DNI, Email, Hash);
+            BLL_CheckDigitsManager checkDigitsManager = new BLL_CheckDigitsManager();
+            checkDigitsManager.SetCheckDigits();
+            List<User> list = dal_user.getUsers();
+            return View("ABMUsuarios", list);
+        }
+        [HttpPost]
+        public ActionResult RemoveUser(User user)
         {
             dal_user.DeleteUser(user);
+            BLL_CheckDigitsManager checkDigitsManager = new BLL_CheckDigitsManager();
+            checkDigitsManager.SetCheckDigits();
             List<User> list = dal_user.getUsers();
-            return View(list);
+            return View("ABMUsuarios", list);
+        }
+        [HttpPost]
+        public ActionResult UpdateUser(User user)
+        {
+            dal_user.UpdateUser(user);
+            BLL_CheckDigitsManager checkDigitsManager = new BLL_CheckDigitsManager();
+            checkDigitsManager.SetCheckDigits();
+            List<User> list = dal_user.getUsers();
+            return View("ABMUsuarios", list);
         }
     }
 }

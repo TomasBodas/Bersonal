@@ -30,8 +30,8 @@ namespace UAIDesarrolloArquitectura.Controllers
             
             DAL_User dalUser = new DAL_User();
             dalUser.EventLog(SessionManager.GetInstance.User.id, DateTime.Now.ToString(), "Cierre de sesión", "Se cerró sesión");
-            BLL_DVManager bll_dvmanager = new BLL_DVManager();
-            bll_dvmanager.actualizarDV();
+            BLL_CheckDigitsManager bll_dvmanager = new BLL_CheckDigitsManager();
+            bll_dvmanager.SetCheckDigits();
             SessionManager.logout();
             return View("Index");
         }

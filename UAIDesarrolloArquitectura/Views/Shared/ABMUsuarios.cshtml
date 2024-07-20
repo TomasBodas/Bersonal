@@ -8,7 +8,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bitacora</title>
+    <title>Gestión de Usuarios</title>
     <link rel="stylesheet" href="~/Content/Site.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -41,12 +41,21 @@
             color: white;
             align-items: center;
             border-style: none;
+            margin:10px;
         }
 
             .btnRemover:hover {
                 background-color: rgb(34, 124, 222);
                 cursor: pointer;
             }
+
+        .textBoxContainer {
+            display: flex;
+            margin: 10px;
+            justify-content: center;
+            gap: 5px;
+            font-size: 13px;
+        }
     </style>
 </head>
 <body>
@@ -67,7 +76,10 @@
                 }
                 <a href="@Url.Action("Carrito", "Carrito")">Carrito</a>
             </div>
-            <p style='color:black'>Bienvenido, @Services.SessionManager.GetInstance.User.Name</p>
+            <div class="opciones">
+                <img src="~/assets/user-image-with-black-background-svgrepo-com.svg" width="30px" />
+                <p style='color: black; white-space: nowrap;'>Bienvenido, @Services.SessionManager.GetInstance.User.Name</p>
+            </div>
         }
         else
         {
@@ -84,36 +96,44 @@
         <a href="@Url.Action("Plans", "Home")">Planes</a>
         <a href="https://es.euronews.com/green">TV</a>
     </nav>
-    <button class="btnRemover">Crear Usuario</button>
-    <br />
-    <div class="contenedor-tabla">
-        <table>
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Nombre</th>
-                    <th>Apellido</th>
-                    <th>DNI</th>
-                    <th>Email</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var user in Model)
-                {
+    <form action="@Url.Action("AddUser", "ABM")" method="post">
+        <div class="textBoxContainer">
+            Nombre: <input type="text" name="Name" required />
+            Apellido: <input type="text" name="Surname" required/>
+            DNI: <input type="text" name="DNI" required/>
+            Email: <input type="text" name="Email" required/>
+            Contraseña: <input type="text" name="Password" required/>
+        </div>
+        <button class="btnRemover" type="submit">Crear Usuario</button>
+    </form>
+        <br />
+        <div class="contenedor-tabla">
+            <table>
+                <thead>
                     <tr>
-                        <td>@user.id</td>
-                        <td>@user.Name</td>
-                        <td>@user.Surname</td>
-                        <td>@user.DNI</td>
-                        <td>@user.Email</td>
-                        <td>
-                            <form action="@Url.Action("Borrar", "ABM")" method="post">
-                                <input type="hidden" name="Id" value="@user.id" />
-                                <button class="btnRemover" type="submit">Modificar</button>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Apellido</th>
+                        <th>DNI</th>
+                        <th>Email</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var user in Model)
+                    {
+                        <tr>
+                            <form action="@Url.Action("UpdateUser", "ABM")" method="post">
+                            <td><input type="hidden" name="Id" value="@user.id" />@user.id</td>
+                            <td><input type="text" name="Name" value="@user.Name" /></td>
+                            <td><input type="text" name="Surname" value="@user.Surname" /></td>
+                            <td><input type="text" name="DNI" value="@user.DNI" /></td>
+                            <td><input type="text" name="Email" value="@user.Email" /></td>
+                            <td><button class="btnRemover" type="submit">Modificar</button></td>
                             </form>
-                        </td>
                         <td>
-                            <form action="@Url.Action("Borrar", "ABM")" method="post">
+                            <form action="@Url.Action("RemoveUser", "ABM")" method="post">
                                 <input type="hidden" name="Id" value="@user.id" />
                                 <button class="btnRemover" type="submit">Borrar</button>
                             </form>

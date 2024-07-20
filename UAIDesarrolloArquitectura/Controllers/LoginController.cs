@@ -21,7 +21,6 @@ namespace UAIDesarrolloArquitectura.Controllers
             SessionManager.logout();
             return View("Login");
         }
-
         [HttpPost]
         public ActionResult Login(LoginViewModel model)
         {
@@ -40,14 +39,13 @@ namespace UAIDesarrolloArquitectura.Controllers
                             //Singleton setup
                             SessionManager.login(user);
                             //DV Check
-                            BLL_DVManager bll_dvmanager = new BLL_DVManager();
-                            if (!BLL_DVManager.verificarDV())
+                            BLL_CheckDigitsManager checkDigitsManager = new BLL_CheckDigitsManager();
+                            if (!checkDigitsManager.CheckDigits())
                             {
                                 return RedirectToAction("ErrorDV", "Backup");
                             }
                             else dalUser.EventLog(user.id, DateTime.Now.ToString(), "Inicio de sesión", "Se inició sesión");
-                            bll_dvmanager.actualizarDV();
-
+                            checkDigitsManager.SetCheckDigits();
                         }
                         else throw new Exception();
                         return RedirectToAction("Index", "Home");

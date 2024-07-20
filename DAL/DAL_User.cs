@@ -143,12 +143,23 @@ namespace DAL
         {
             using (SqlConnection connection = new SqlConnection(CONNECTION_STRING))
             {
-                string select = $"DELETE FROM usuario WHERE id={user.id}";
-                SqlCommand command = new SqlCommand(select, connection);
+                string deleteLogEventsQuery = $"DELETE bitacora WHERE FK_usuario_bitacora = {user.id};";
+                SqlCommand deleteLogEventsCommand = new SqlCommand(deleteLogEventsQuery, connection);
                 connection.Open();
-                command.ExecuteNonQuery();
-                DAL_DV dal_dv = new DAL_DV();
-                dal_dv.actualizarDVV("usuario");
+                deleteLogEventsCommand.ExecuteNonQuery();
+                string deleteUserQuery = $"DELETE FROM usuario WHERE id={user.id}";
+                SqlCommand deleteUserQueryCommand = new SqlCommand(deleteUserQuery, connection);
+                deleteUserQueryCommand.ExecuteNonQuery();
+            }
+        }
+        public void UpdateUser(User user)
+        {
+            using (SqlConnection connection = new SqlConnection(CONNECTION_STRING))
+            {
+                string updateUserQuery = $"UPDATE usuario SET nombre='{user.Name}', apellido='{user.Surname}', DNI={user.DNI}, email='{user.Email}' WHERE id={user.id}";
+                SqlCommand updateUserQueryCommand = new SqlCommand(updateUserQuery, connection);
+                connection.Open();
+                updateUserQueryCommand.ExecuteNonQuery();
             }
         }
     }
