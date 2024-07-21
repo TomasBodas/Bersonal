@@ -25,6 +25,10 @@ namespace UAIDesarrolloArquitectura.Controllers
             if (SessionManager.GetInstance.User.Name == "admin")
             {
                 List<Log> list = dAL_Log.getLog();
+                foreach(Log log in list)
+                {
+                    log.User = PasswordEncrypter.DecryptData(log.User);
+                }
                 return View(list);
             }
             else return RedirectToAction("Index", "Home");
@@ -36,6 +40,10 @@ namespace UAIDesarrolloArquitectura.Controllers
             if (Fechainicio != null || Fechafinal != null)
             {
                 List<Log> filteredList = list.Where(p => p.Fecha >= Fechainicio && p.Fecha <= Fechafinal).ToList();
+                foreach (Log log in filteredList)
+                {
+                    log.User = PasswordEncrypter.DecryptData(log.User);
+                }
                 return View(filteredList);
             }
             else return View(list);    

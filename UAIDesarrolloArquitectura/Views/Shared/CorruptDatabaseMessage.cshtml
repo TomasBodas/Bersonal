@@ -14,9 +14,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Chivo:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <style>
-
-           
-
         a, input[type="submit"] {
             background-color: rgb(30, 100, 196);
             color: white;
@@ -64,7 +61,6 @@
                 <p>La base de datos está corrupta.</p>
                 <p> Lista de errores: </p>
                 <ul>
-<<<<<<< HEAD
                     @if (Model != null)
                     {
                         foreach (var error in Model)
@@ -72,11 +68,6 @@
                             <li>@error</li>
                         }
                     }
-=======
-                    @foreach (var error in Model ?? new List<string>())
-                    {
-                <li>@error</li>}
->>>>>>> 3195feffcdc93c6ffd7ed3341600a883785e2f3c
                 </ul>
                 <p>Elija cómo proceder</p>
                 <div class="contenedor-botones">
@@ -108,7 +99,6 @@
                         </script>
                     }
                     <div>
-<<<<<<< HEAD
                         @if (ViewData["SetCheckDigitsIsSuccess"] != null)
                         {
                             <script type="text/javascript">
@@ -118,11 +108,6 @@
 
                         }
                         <a href="@Url.Action("SetCheckDigits", "Backup")">Recalcular Dígitos Verificadores</a>
-=======
-                        <form action="@Url.Action("RestoreDV", "Backup")" method="get">
-                            <button type="submit">Recalcular Dígitos Verificadores</button>
-                        </form>
->>>>>>> 3195feffcdc93c6ffd7ed3341600a883785e2f3c
                     </div>
                     <div>
                         <a href="@Url.Action("Login", "Login")">Salir</a>

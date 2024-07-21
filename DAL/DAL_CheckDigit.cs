@@ -19,7 +19,11 @@ namespace DAL
 
 		public bool CheckVerticalDigit(string tableName)
 		{
-			string calculatedVerticalDigit = CalculateVerticalDigit(tableName).GetHashCode().ToString();
+			string calculatedVerticalDigit = CalculateVerticalDigit(tableName);
+            if (calculatedVerticalDigit != "")
+			{
+                calculatedVerticalDigit = calculatedVerticalDigit.GetHashCode().ToString();
+            }
 			return calculatedVerticalDigit.Equals(GetVerticalDigit(tableName));
 		}
 		public string CalculateVerticalDigit(string tableName)

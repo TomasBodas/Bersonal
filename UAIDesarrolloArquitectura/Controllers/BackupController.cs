@@ -54,13 +54,5 @@ namespace UAIDesarrolloArquitectura.Controllers
             ViewData["SetCheckDigitsIsSuccess"] = true;
             return View("CorruptDatabaseMessage");
         }
-         [HttpGet]
-        public ActionResult RestoreDV()
-        {
-            BLL_DVManager bll_dvmanager = new BLL_DVManager();
-            bll_dvmanager.actualizarDV();
-            //Llamamos a la vista CorruptDatabaseMessage
-            return View("CorruptDatabaseMessage");
-        }
     }
 }

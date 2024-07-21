@@ -36,22 +36,11 @@ namespace UAIDesarrolloArquitectura.Controllers
                 DAL_User dalUser = new DAL_User();
                 BLL_CheckDigitsManager checkDigitsManager = new BLL_CheckDigitsManager();
                 string Hash = PasswordEncrypter.EncryptPassword(Password);
-<<<<<<< HEAD
-                dalUser.RegisterUser(Name, Surname, DNI, Email, Hash);
-                User user = dalUser.findByEmail(Email);
+                string emailHash = PasswordEncrypter.EncryptData(Email);
+                dalUser.RegisterUser(Name, Surname, DNI, emailHash, Hash);
+                User user = dalUser.findByEmail(emailHash);
                 dalUser.EventLog(user.id, DateTime.Now.ToString(), "Registro", "Se creó una cuenta");
                 checkDigitsManager.SetCheckDigits();
-=======
-                string emailHash = PasswordEncrypter.EncryptData(Email);
-                dal_usuarios.RegisterUser(Name, Surname, DNI, emailHash, Hash);
-                User user = dal_usuarios.findByEmail(emailHash);
-                dal_usuarios.EventLog(user.id, DateTime.Now.ToString(), "Registro", "Se creó una cuenta");
-                bll_dvmanager.actualizarDV();
->>>>>>> 3195feffcdc93c6ffd7ed3341600a883785e2f3c
-                // Your registration logic here, e.g., save to database, etc.
-
-
-                // On successful registration, redirect to another page
                 return RedirectToAction("Login", "Login");
             }
 

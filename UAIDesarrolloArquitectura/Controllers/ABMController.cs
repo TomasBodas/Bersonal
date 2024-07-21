@@ -25,8 +25,12 @@ namespace UAIDesarrolloArquitectura.Controllers
             }
             if (SessionManager.GetInstance.User.Name == "admin")
             {
-                List<User> list = dal_user.getUsers();
-                return View(list);
+                List<User> usersList = dal_user.getUsers();
+                foreach (User user in usersList)
+                {
+                    user.Email = PasswordEncrypter.DecryptData(user.Email);
+                }
+                return View(usersList);
             }
             else return RedirectToAction("Index", "Home");
         }
@@ -37,26 +41,38 @@ namespace UAIDesarrolloArquitectura.Controllers
             dal_user.RegisterUser(Name, Surname, DNI, Email, Hash);
             BLL_CheckDigitsManager checkDigitsManager = new BLL_CheckDigitsManager();
             checkDigitsManager.SetCheckDigits();
-            List<User> list = dal_user.getUsers();
-            return View("ABMUsuarios", list);
+            List<User> usersList = dal_user.getUsers();
+            foreach (User user in usersList)
+            {
+                user.Email = PasswordEncrypter.DecryptData(user.Email);
+            }
+            return View("ABMUsuarios", usersList);
         }
         [HttpPost]
-        public ActionResult RemoveUser(User user)
+        public ActionResult RemoveUser(User pUser)
         {
-            dal_user.DeleteUser(user);
+            dal_user.DeleteUser(pUser);
             BLL_CheckDigitsManager checkDigitsManager = new BLL_CheckDigitsManager();
             checkDigitsManager.SetCheckDigits();
-            List<User> list = dal_user.getUsers();
-            return View("ABMUsuarios", list);
+            List<User> usersList = dal_user.getUsers();
+            foreach (User user in usersList)
+            {
+                user.Email = PasswordEncrypter.DecryptData(user.Email);
+            }
+            return View("ABMUsuarios", usersList);
         }
         [HttpPost]
-        public ActionResult UpdateUser(User user)
+        public ActionResult UpdateUser(User pUser)
         {
-            dal_user.UpdateUser(user);
+            dal_user.UpdateUser(pUser);
             BLL_CheckDigitsManager checkDigitsManager = new BLL_CheckDigitsManager();
             checkDigitsManager.SetCheckDigits();
-            List<User> list = dal_user.getUsers();
-            return View("ABMUsuarios", list);
+            List<User> usersList = dal_user.getUsers();
+            foreach (User user in usersList)
+            {
+                user.Email = PasswordEncrypter.DecryptData(user.Email);
+            }
+            return View("ABMUsuarios", usersList);
         }
     }
 }
