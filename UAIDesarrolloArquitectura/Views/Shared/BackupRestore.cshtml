@@ -1,0 +1,109 @@
+﻿
+@{
+    ViewBag.Title = "BackupRestore";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="~/Content/Site.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Chivo:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <title>Respaldar/Restaurar Base de Datos</title>
+    <style>
+        .contenedor-backup-restore {
+            margin: 150px auto;
+            width: 80%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 15px;
+            align-items: center;
+        }
+        .boton {
+            padding: 10px;
+            background-color: rgb(30, 100, 196);
+            color: white;
+            border-style: none;
+            width: 180px;
+            font-size: 14px;
+            font-family: "Chivo", Arial, sans-serif;
+            text-decoration:none;
+        }
+            .boton:hover {
+                background-color: rgb(34, 124, 222);
+                cursor: pointer;
+            }
+        .contenedor-botones-restore {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        input[type="text"] {
+            width: 300px;
+            border-style: none;
+            border-radius: 5px;
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="barra">
+        @if (Services.SessionManager.IsLogged())
+        {
+            <div class="opciones">
+                <a href="@Url.Action("Logout", "Home")">Cerrar Sesión</a>
+                <a href="@Url.Action("Index", "Home")">Inicio</a>
+                <a href="#">Respaldar/Restaurar Base de Datos</a>
+                <a href="@Url.Action("Carrito", "Carrito")">Carrito</a>
+            </div>
+            <div class="opciones">
+                <img src="~/assets/user-image-with-black-background-svgrepo-com.svg" width="30px" />
+                <p style='color: black; white-space: nowrap;'>Bienvenido, @Services.SessionManager.GetInstance.User.Name</p>
+            </div>
+        }
+        else
+        {
+            <a href="@Url.Action("Login", "Login")">Iniciar Sesión</a>
+        }
+    </nav>
+    <header>
+        <h1>Bersonal</h1>
+    </header>
+    <nav>
+        <a href="/pages/contacto.html">Internet</a>
+        <a href="https://es.euronews.com/noticias/internacional">Tienda</a>
+        <a href="https://es.euronews.com/business">Portabilidad</a>
+        <a href="@Url.Action("Plans", "Home")">Planes</a>
+        <a href="https://es.euronews.com/green">TV</a>
+    </nav>
+    <div class="contenedor-backup-restore">
+        <a class="boton" href="@Url.Action("Backup", "Backup")">Generar Respaldo</a>
+        <form action="/Backup/Restore" method="post">
+            <div class="contenedor-botones-restore">
+                <input type="hidden" name="ReturnUrl" value="@Url.Action("BackupRestore")" />
+                <input type="text" name="path" placeholder="Ingrese la ruta del archivo de respaldo" required />
+                <input class="boton" type="submit" value="Restaurar" />
+            </div>
+        </form>
+    </div>
+    @if (TempData["IsSuccess"] != null)
+    {
+        <script type="text/javascript">
+            let isSuccess = @TempData["IsSuccess"].ToString().ToLower();
+            if (isSuccess)
+            {
+                alert('La restauración fue un éxito');
+            }
+            else
+            {
+                alert('Hubo un error al restaurar de la base de datos. Verifique la ruta del archivo de respaldo')
+            }
+        </script>
+    }
+</body>
+</html>

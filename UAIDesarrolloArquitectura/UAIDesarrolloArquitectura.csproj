@@ -174,6 +174,7 @@
     <Content Include="Views\Shared\Carrito.cshtml" />
     <Content Include="Views\Shared\Bitacora.cshtml" />
     <Content Include="Views\Shared\ABMUsuarios.cshtml" />
+    <Content Include="Views\Shared\BackupRestore.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

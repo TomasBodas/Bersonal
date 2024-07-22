@@ -30,7 +30,7 @@
                 }
                 @if (Services.SessionManager.GetInstance.User.Name == "webmaster")
                 {
-                    <a href="@Url.Action("Backup", "Backup")">Respaldar Base de Datos</a>
+                    <a href="@Url.Action("BackupRestore", "Backup")">Respaldar/Restaurar Base de Datos</a>
                 }
                 <a href="@Url.Action("Carrito", "Carrito")">Carrito</a>
             </div>

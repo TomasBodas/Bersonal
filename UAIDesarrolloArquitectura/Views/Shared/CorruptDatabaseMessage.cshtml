@@ -73,17 +73,18 @@
                 <div class="contenedor-botones">
                     <form action="/Backup/Restore" method="post">
                         <div class="contenedor-botones-restore">
-                            <input type="text" name="path" placeholder="Ingrese la ruta del archivo de respaldo" />
+                            <input type="hidden" name="ReturnUrl" value="@Url.Action("CorrupDatabaseMessage")" />
+                            <input type="text" name="path" placeholder="Ingrese la ruta del archivo de respaldo" required />
                             <br />
                             <input type="submit" value="Restaurar" />
                         </div>
                     </form>
                     @*Si en el diccionario existe una entrada con la clave isSuccess*@
-                    @if (ViewData["isSuccess"] != null)
+                    @if (TempData["IsSuccess"] != null)
                     {
                         <script type="text/javascript">
-                        //Si se pudo hacer
-                        if (@ViewData["isSuccess"].ToString().ToLower())
+                        let isSuccess = @TempData["IsSuccess"].ToString().ToLower();
+                        if (isSuccess)
                         {
                             //Mostramos un mensaje confirmandolo
                             alert('La restauración fue un éxito');

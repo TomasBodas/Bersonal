@@ -34,18 +34,17 @@ namespace UAIDesarrolloArquitectura.Controllers
                 BackupSuccess = true,
                 Message = "El respaldo de la base de datos se creo con exito."
             };
-            return View("Index", model);
+            return View("BackupRestore", model);
         }
         [HttpPost]
-        public ActionResult Restore(string path)
+        public ActionResult Restore(string path, string ReturnUrl)
         {
             //Le pide al que se encarga de la base de datos de restaurarla mandandole la ruta del archivo que necesita
             //El encargado le dice si se puedo hacer o no
             bool IsSuccess = DataBaseServices.RestoreDatabase(path);
             //El controlador notifica en el diccionario en la clave IsSuccess si se pudo hacer o no para que la vista lo obtenga
-            ViewData["IsSuccess"] = IsSuccess;
-            //Llamamos a la vista CorruptDatabaseMessage
-            return View("CorruptDatabaseMessage");
+            TempData["IsSuccess"] = IsSuccess;
+            return Redirect(ReturnUrl);
         }
         public ActionResult SetCheckDigits()
         {
@@ -53,6 +52,14 @@ namespace UAIDesarrolloArquitectura.Controllers
             checkDigitsManager.SetCheckDigits();
             ViewData["SetCheckDigitsIsSuccess"] = true;
             return View("CorruptDatabaseMessage");
+        }
+        public ActionResult BackupRestore()
+        {
+            if (!SessionManager.IsLogged())
+            {
+                return RedirectToAction("Login", "Login");
+            }
+            else return View("BackupRestore");
         }
     }
 }

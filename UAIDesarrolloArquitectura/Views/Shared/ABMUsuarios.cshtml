@@ -65,15 +65,8 @@
             <div class="opciones">
                 <a href="@Url.Action("Logout", "Home")">Cerrar Sesión</a>
                 <a href="@Url.Action("Index", "Home")">Inicio</a>
-                @if (Services.SessionManager.GetInstance.User.Name == "admin")
-                {
-                    <a href="@Url.Action("Bitacora", "Bitacora")">Bitácora</a>
-                    <a href="#">Gestión de usuarios</a>
-                }
-                @if (Services.SessionManager.GetInstance.User.Name == "webmaster")
-                {
-                    <a href="@Url.Action("Backup", "Backup")">Respaldar Base de Datos</a>
-                }
+                <a href="@Url.Action("Bitacora", "Bitacora")">Bitácora</a>
+                <a href="#">Gestión de usuarios</a>
                 <a href="@Url.Action("Carrito", "Carrito")">Carrito</a>
             </div>
             <div class="opciones">
