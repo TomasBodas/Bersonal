@@ -41,7 +41,7 @@ namespace BLL
 				if (!dalCheckDigit.CheckVerticalDigit(tableName))
 				{
                     isSuccessful = false;
-					string errorMessage = "Se eliminó un registro en la tabla " + tableName;
+					string errorMessage = "Se eliminaron uno o más registros de la tabla " + tableName;
 					errors.Add(errorMessage);
 					SessionManager sm = new SessionManager();
 				}
