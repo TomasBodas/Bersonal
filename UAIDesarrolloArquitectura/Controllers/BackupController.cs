@@ -44,7 +44,11 @@ namespace UAIDesarrolloArquitectura.Controllers
             bool IsSuccess = DataBaseServices.RestoreDatabase(path);
             //El controlador notifica en el diccionario en la clave IsSuccess si se pudo hacer o no para que la vista lo obtenga
             TempData["IsSuccess"] = IsSuccess;
-            return Redirect(ReturnUrl);
+            if (ReturnUrl == "/Backup/CorrupDatabaseMessage")
+            {
+                return View("Login");
+            }
+            else return Redirect(ReturnUrl);
         }
         public ActionResult SetCheckDigits()
         {
