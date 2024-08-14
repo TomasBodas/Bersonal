@@ -16,8 +16,8 @@ namespace Services.Models
         public string Password { get; set; }
         public bool IsBlocked { get; set; }
         public int Attempts { get; set; }
-        public bool IsAdmin { get; set; }
 
+        public Perfiles.Profile profile;
         public User() { }
         public User(object[] itemArray) : base()
         {
@@ -27,8 +27,8 @@ namespace Services.Models
             this.DNI = (int)itemArray[3];
             this.Email = (string)itemArray[4];
             this.Password = (string)itemArray[5];
-            this.IsAdmin = (bool)itemArray[6];
         }
+        public List<string> permissionList = new List<string>();
 
     }
 }

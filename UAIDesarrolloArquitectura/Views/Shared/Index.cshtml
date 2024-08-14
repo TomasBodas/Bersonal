@@ -1,5 +1,5 @@
 ﻿@using Services.Models
-@model UAIDesarrolloArquitectura.Models.ViewModel.BackupViewModel
+@model List<string>
 <!DOCTYPE html>
 <html lang="es">
 @{
@@ -14,24 +14,27 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Chivo:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-</head>
     
+</head>
+
 
 <body>
     <nav class="barra">
         @if (Services.SessionManager.IsLogged())
         {
-            <div class="opciones">
+            <div id="opciones" class="opciones">
                 <a href="@Url.Action("Logout", "Home")">Cerrar Sesión</a>
-                @if (Services.SessionManager.GetInstance.User.Name == "admin")
-                {
-                    <a href="@Url.Action("Bitacora", "Bitacora")">Bitácora</a>
-                    <a href="@Url.Action("ABMUsuarios", "ABM")">Gestión de usuarios</a>
-                }
-                @if (Services.SessionManager.GetInstance.User.Name == "webmaster")
-                {
-                    <a href="@Url.Action("BackupRestore", "Backup")">Respaldar/Restaurar Base de Datos</a>
-                }
+                <a style="display:none;" id="bitacora" href="@Url.Action("Bitacora", "Bitacora")">Bitácora</a>
+                <a style="display:none;" id="abmusuarios" href="@Url.Action("ABMUsuarios", "ABM")">Gestión de usuarios</a>
+                <a style="display:none;" id="restore" href="@Url.Action("BackupRestore", "Backup")">Respaldar/Restaurar Base de Datos</a>
+                <script type="text/javascript">
+                     @foreach (string permission in Services.SessionManager.GetInstance.User.permissionList)
+                     {
+                         <text>
+                             document.getElementById('@permission').style.display = 'block';
+                         </text>
+                     }
+                </script>
                 <a href="@Url.Action("Carrito", "Carrito")">Carrito</a>
             </div>
             <div class="opciones">
@@ -103,5 +106,6 @@
     <footer>
         Copyright © Personal 2024
     </footer>
+
 </body>
 </html>

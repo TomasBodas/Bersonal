@@ -2,6 +2,7 @@
 using DAL;
 using Services;
 using Services.Models;
+using Services.Perfiles;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,6 +40,7 @@ namespace UAIDesarrolloArquitectura.Controllers
                         {
                             //Singleton setup
                             SessionManager.login(user);
+                            CreatePermissionsList(user);
                             //DV Check
                             BLL_CheckDigitsManager checkDigitsManager = new BLL_CheckDigitsManager();
                             if (!checkDigitsManager.CheckDigits())
@@ -56,6 +58,33 @@ namespace UAIDesarrolloArquitectura.Controllers
             } catch (Exception) { ModelState.AddModelError("MissingUser", "No existe un usuario con estos datos"); }
             
             return View(model);
+        }
+        public void CreatePermissionsList(User pUser)
+        {
+            DAL_Permission dalPermission = new DAL_Permission();
+            if (SessionManager.IsLogged())
+            {
+
+                Profile userProfile = SessionManager.GetInstance.User.profile;
+                dalPermission.FillProfileAuths(userProfile);
+                pUser.permissionList.Clear();
+                foreach (Auth auth in userProfile.Children)
+                {
+                    if (auth is Permission)
+                    {
+                        pUser.permissionList.Add(auth.Name);
+                    }
+                    else Recorrer(auth, pUser);
+                }
+            }
+        }
+        private void Recorrer(Auth pAuth, User pUser)
+        {
+            foreach (Auth auth in pAuth.Children)
+            {
+                if (auth is Role) Recorrer(auth, pUser);
+                else pUser.permissionList.Add(auth.Permission.ToString());
+            }
         }
     }
 }

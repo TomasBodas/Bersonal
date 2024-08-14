@@ -44,6 +44,11 @@
     <Compile Include="DataBaseServices.cs" />
     <Compile Include="Models\Log.cs" />
     <Compile Include="PasswordEncrypter.cs" />
+    <Compile Include="Perfiles\Auth.cs" />
+    <Compile Include="Perfiles\Permission.cs" />
+    <Compile Include="Perfiles\PermissionType.cs" />
+    <Compile Include="Perfiles\Profile.cs" />
+    <Compile Include="Perfiles\Role.cs" />
     <Compile Include="SessionManager.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

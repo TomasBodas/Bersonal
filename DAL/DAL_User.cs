@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Data.SqlClient;
 using Services.Models;
 using Services;
+using Services.Perfiles;
 
 namespace DAL
 {
@@ -21,7 +22,7 @@ namespace DAL
                 try
                 {
                     connection.Open();
-                    string query = "INSERT INTO usuario (nombre, apellido, DNI, email, contrasena, isAdmin) VALUES (@Nombre, @Apellido, @DNI, @Email, @Contraseña, @IsAdmin)";
+                    string query = "INSERT INTO usuario (nombre, apellido, DNI, email, contrasena, ID_Perfil) VALUES (@Nombre, @Apellido, @DNI, @Email, @Contraseña, @ID_Perfil)";
                     using (SqlCommand command = new SqlCommand(query, connection))
                     {
                         command.Parameters.AddWithValue("@Nombre", Name);
@@ -29,8 +30,18 @@ namespace DAL
                         command.Parameters.AddWithValue("@DNI", DNI);
                         command.Parameters.AddWithValue("@Email", Email);
                         command.Parameters.AddWithValue("@Contraseña", HashPassword);
-                        if (Name == "webmaster") command.Parameters.AddWithValue("@IsAdmin", true);
-                        else command.Parameters.AddWithValue("@IsAdmin", false);
+                        if (Name == "webmaster" || Name == "admin")
+                        {
+                            if (Name == "webmaster")
+                            {
+                                command.Parameters.AddWithValue("@ID_Perfil", 2);
+                            }
+                            if (Name == "admin")
+                            {
+                                command.Parameters.AddWithValue("@ID_Perfil", 1);
+                            }
+                        }
+                        else command.Parameters.AddWithValue("@ID_Perfil", 3);
                         command.ExecuteNonQuery();
                     }
                 }
@@ -79,12 +90,12 @@ namespace DAL
             {
                 connection.Open();
 
-                string query = $"SELECT id, nombre, apellido, DNI, email, contrasena, isAdmin FROM usuario WHERE email = '{email}'";
+                string selectUserQuery = $"SELECT id, nombre, apellido, DNI, email, contrasena, ID_Perfil FROM usuario WHERE email = '{email}'";
+                int profileId = 0;
 
-
-                using (SqlCommand command = new SqlCommand(query, connection))
+                using (SqlCommand selectUserCommand = new SqlCommand(selectUserQuery, connection))
                 {
-                    sqlReader = command.ExecuteReader();
+                    sqlReader = selectUserCommand.ExecuteReader();
                     if (sqlReader.HasRows)
                     {
                         while (sqlReader.Read())
@@ -96,8 +107,25 @@ namespace DAL
                                 (string) sqlReader[2],
                                 (int) sqlReader[3],
                                 (string) sqlReader[4],
-                                (string) sqlReader[5],
-                                (bool) sqlReader[6]
+                                (string) sqlReader[5],     
+                            });
+                            profileId = (int)sqlReader[6];
+                        }
+                    }
+                    sqlReader.Close();
+                }
+                string selectProfileQuery = $"SELECT * FROM perfil WHERE id = {profileId}";
+                using (SqlCommand selectProfileCommand = new SqlCommand(selectProfileQuery, connection))
+                {
+                    sqlReader = selectProfileCommand.ExecuteReader();
+                    if (sqlReader.HasRows)
+                    {
+                        while (sqlReader.Read())
+                        {
+                            user.profile = new Profile(new object[]
+                            {
+                                (int) sqlReader[0],
+                                (string) sqlReader[1],
                             });
                         }
                     }

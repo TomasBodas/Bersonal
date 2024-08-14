@@ -65,8 +65,17 @@
             <div class="opciones">
                 <a href="@Url.Action("Logout", "Home")">Cerrar Sesión</a>
                 <a href="@Url.Action("Index", "Home")">Inicio</a>
-                <a href="@Url.Action("Bitacora", "Bitacora")">Bitácora</a>
-                <a href="#">Gestión de usuarios</a>
+                <a style="display:none;" id="bitacora" href="@Url.Action("Bitacora", "Bitacora")">Bitácora</a>
+                <a style="display:none;" id="abmusuarios" href="#">Gestión de usuarios</a>
+                <a style="display:none;" id="restore" href="@Url.Action("BackupRestore", "Backup")">Respaldar/Restaurar Base de Datos</a>
+                <script type="text/javascript">
+                     @foreach (string permission in Services.SessionManager.GetInstance.User.permissionList)
+                     {
+                         <text>
+                             document.getElementById('@permission').style.display = 'block';
+                         </text>
+                     }
+                </script>
                 <a href="@Url.Action("Carrito", "Carrito")">Carrito</a>
             </div>
             <div class="opciones">
