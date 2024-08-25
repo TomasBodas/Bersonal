@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.WebPages;
 using System.Windows;
 using UAIDesarrolloArquitectura.Models.ViewModel;
 
@@ -34,19 +35,24 @@ namespace UAIDesarrolloArquitectura.Controllers
             else return RedirectToAction("Index", "Home");
         }
         [HttpPost]
-        public ActionResult Bitacora(DateTime Fechainicio, DateTime Fechafinal)
+        public ActionResult Bitacora(DateTime Fechainicio, DateTime Fechafinal, string Modulo = null)
         {
             List<Log> list = dAL_Log.getLog();
-            if (Fechainicio != null || Fechafinal != null)
+            //List<Log> filteredList = new List<Log>();
+            if (Fechainicio == null || Fechafinal == null && Modulo == null) return View(list);
+            if (Fechainicio != null && Fechafinal != null)
             {
-                List<Log> filteredList = list.Where(p => p.Fecha >= Fechainicio && p.Fecha <= Fechafinal).ToList();
-                foreach (Log log in filteredList)
-                {
-                    log.User = PasswordEncrypter.DecryptData(log.User);
-                }
-                return View(filteredList);
+                list = list.Where(p => p.Fecha >= Fechainicio && p.Fecha <= Fechafinal).ToList();
             }
-            else return View(list);    
+            if (Modulo != null && !Modulo.IsEmpty())
+            {
+                list = list.Where(p => p.Modulo == Modulo).ToList();                  
+            }
+            foreach (Log log in list)
+            {
+                log.User = PasswordEncrypter.DecryptData(log.User);
+            }
+            return View(list);
         }
     }
 }
