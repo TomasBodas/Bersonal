@@ -38,6 +38,13 @@ namespace UAIDesarrolloArquitectura.Controllers
             string valorSeleccionado = data.Valor;
             string urlActual = data.Url;
             urlActual.Replace("?", "");
+            if (SessionManager.IsLogged())
+            {
+                SessionManager.GetInstance.User.LanguageId = int.Parse(valorSeleccionado);
+                DAL_User dal_user = new DAL_User();
+                dal_user.UpdateUser(SessionManager.GetInstance.User);
+            }
+
             service.ChangeLanguage(valorSeleccionado);
             // Aquí puedes procesar tanto el valor seleccionado como la URL actual
             return Redirect(urlActual);

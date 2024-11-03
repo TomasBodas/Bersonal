@@ -186,7 +186,7 @@ namespace DAL
         {
             using (SqlConnection connection = new SqlConnection(CONNECTION_STRING))
             {
-                string updateUserQuery = $"UPDATE usuario SET nombre='{user.Name}', apellido='{user.Surname}', DNI={user.DNI}, email='{user.Email}' WHERE id={user.id}";
+                string updateUserQuery = $"UPDATE usuario SET nombre='{user.Name}', apellido='{user.Surname}', DNI={user.DNI}, email='{user.Email}', idiomaid = '{user.LanguageId}' WHERE id={user.id}";
                 SqlCommand updateUserQueryCommand = new SqlCommand(updateUserQuery, connection);
                 connection.Open();
                 updateUserQueryCommand.ExecuteNonQuery();
