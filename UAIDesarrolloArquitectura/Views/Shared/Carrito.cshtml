@@ -1,6 +1,19 @@
 ﻿@using Services.Models
 @{
     ViewBag.Title = "Carrito";
+    Services.Idioma.Translator translator = new Services.Idioma.Translator();
+    UAIDesarrolloArquitectura.Controllers.IdiomaController lC = new UAIDesarrolloArquitectura.Controllers.IdiomaController();
+    lC.InitializeController();
+    Services.LanguageService service = lC.getService();
+    service.Susbcribe(translator);
+    if (Services.SessionManager.IsLogged())
+    {
+        service.ChangeLanguage((Services.SessionManager.GetInstance.User.LanguageId).ToString());
+    }
+    else
+    {
+        if (!service.SelectedLanguageExists()) { service.ChangeLanguage("1"); }
+    }
 }
 
 <!DOCTYPE html>
@@ -101,11 +114,12 @@
         @if (Services.SessionManager.IsLogged())
         {
             <div class="opciones">
-                <a href="@Url.Action("Logout", "Home")">Cerrar Sesión</a>
-                <a href="@Url.Action("Index", "Home")">Inicio</a>
-                <a style="display:none;" id="bitacora" href="@Url.Action("Bitacora", "Bitacora")">Bitácora</a>
-                <a style="display:none;" id="abmusuarios" href="@Url.Action("ABMUsuarios", "ABM")">Gestión de usuarios</a>
-                <a style="display:none;" id="restore" href="@Url.Action("BackupRestore", "Backup")">Respaldar/Restaurar Base de Datos</a>
+                <a href="@Url.Action("Logout", "Home")">@translator.GetTraduction(service, "Logout")</a>
+                <a href="@Url.Action("Index", "Home")">@translator.GetTraduction(service, "Main")</a>
+                <a style="display:none;" id="bitacora" href="@Url.Action("Bitacora", "Bitacora")">@translator.GetTraduction(service, "Log")</a>
+                <a style="display:none;" id="abmusuarios" href="@Url.Action("ABMUsuarios", "ABM")">@translator.GetTraduction(service, "ManageUser")</a>
+                <a style="display:none;" id="restore" href="@Url.Action("BackupRestore", "Backup")">@translator.GetTraduction(service, "Restoredb")</a>
+                <a style="display:none;" id="1001" href="@Url.Action("ABMIdioma", "Idioma")">@translator.GetTraduction(service, "ManageLanguage")</a>
                 <script type="text/javascript">
                      @foreach (string permission in Services.SessionManager.GetInstance.User.permissionList)
                      {
@@ -114,16 +128,16 @@
                          </text>
                      }
                 </script>
-                <a href="#">Carrito</a>
+                <a href="#">@translator.GetTraduction(service, "Cart")</a>
             </div>
             <div class="opciones">
                 <img src="~/assets/user-image-with-black-background-svgrepo-com.svg" width="30px" />
-                <p style='color: black; white-space: nowrap;'>Bienvenido, @Services.SessionManager.GetInstance.User.Name</p>
+                <p style='color: black; white-space: nowrap;'>@translator.GetTraduction(service, "Welcome"), @Services.SessionManager.GetInstance.User.Name</p>
             </div>
         }
         else
         {
-            <a href="@Url.Action("Login", "Login")">Iniciar Sesión</a>
+    <a href="@Url.Action("Login", "Login")">@translator.GetTraduction(service, "Login")</a>
         }
     </nav>
     <header>
@@ -131,9 +145,9 @@
     </header>
     <nav>
         <a href="/pages/contacto.html">Internet</a>
-        <a href="https://es.euronews.com/noticias/internacional">Tienda</a>
-        <a href="https://es.euronews.com/business">Portabilidad</a>
-        <a href="@Url.Action("Plans", "Home")">Planes</a>
+        <a href="https://es.euronews.com/noticias/internacional">@translator.GetTraduction(service, "Store")</a>
+        <a href="https://es.euronews.com/business">@translator.GetTraduction(service, "Portability")</a>
+        <a href="@Url.Action("Plans", "Home")">@translator.GetTraduction(service, "Plans")</a>
         <a href="https://es.euronews.com/green">TV</a>
     </nav>
     <div id="cartItems">

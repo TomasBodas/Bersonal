@@ -24,6 +24,10 @@ namespace Services
         {
             Languages = languages;
         }
+        public List<Language> GetLanguages()
+        {
+            return Languages;
+        }
         public void ChangeLanguage(string languageId)
         {
             if (int.Parse(languageId) != 0)

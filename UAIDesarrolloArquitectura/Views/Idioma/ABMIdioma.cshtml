@@ -1,6 +1,19 @@
 ﻿@model List<Services.Idioma.Language>
 @{
     ViewBag.Title = "ABMIdioma";
+    Services.Idioma.Translator translator = new Services.Idioma.Translator();
+    UAIDesarrolloArquitectura.Controllers.IdiomaController lC = new UAIDesarrolloArquitectura.Controllers.IdiomaController();
+    lC.InitializeController();
+    Services.LanguageService service = lC.getService();
+    service.Susbcribe(translator);
+    if (Services.SessionManager.IsLogged())
+    {
+        service.ChangeLanguage((Services.SessionManager.GetInstance.User.LanguageId).ToString());
+    }
+    else
+    {
+        if (!service.SelectedLanguageExists()) { service.ChangeLanguage("1"); }
+    }
 }
 
 <!DOCTYPE html>
@@ -64,11 +77,12 @@
         @if (Services.SessionManager.IsLogged())
         {
             <div class="opciones">
-                <a href="@Url.Action("Logout", "Home")">Cerrar Sesión</a>
-                <a href="@Url.Action("Index", "Home")">Inicio</a>
-                <a style="display:none;" id="bitacora" href="@Url.Action("Bitacora", "Bitacora")">Bitácora</a>
-                <a style="display:none;" id="abmusuarios" href="#">Gestión de usuarios</a>
-                <a style="display:none;" id="restore" href="@Url.Action("BackupRestore", "Backup")">Respaldar/Restaurar Base de Datos</a>
+                <a href="@Url.Action("Logout", "Home")">@translator.GetTraduction(service, "Logout")</a>
+                <a href="@Url.Action("Index", "Home")">@translator.GetTraduction(service, "Main")</a>
+                <a style="display:none;" id="bitacora" href="@Url.Action("Bitacora", "Bitacora")">@translator.GetTraduction(service, "Log")</a>
+                <a style="display:none;" id="abmusuarios" href="#">@translator.GetTraduction(service, "ManageUser")</a>
+                <a style="display:none;" id="restore" href="@Url.Action("BackupRestore", "Backup")">@translator.GetTraduction(service, "Restoredb")</a>
+                <a style="display:none;" id="1001" href="@Url.Action("ABMIdioma", "Idioma")">@translator.GetTraduction(service, "ManageLanguage")</a>
                 <script type="text/javascript">
                      @foreach (string permission in Services.SessionManager.GetInstance.User.permissionList)
                      {
@@ -77,16 +91,16 @@
                          </text>
                      }
                 </script>
-                <a href="@Url.Action("Carrito", "Carrito")">Carrito</a>
+                <a href="@Url.Action("Carrito", "Carrito")">@translator.GetTraduction(service, "Cart")</a>
             </div>
             <div class="opciones">
                 <img src="~/assets/user-image-with-black-background-svgrepo-com.svg" width="30px" />
-                <p style='color: black; white-space: nowrap;'>Bienvenido, @Services.SessionManager.GetInstance.User.Name</p>
+                <p style='color: black; white-space: nowrap;'>@translator.GetTraduction(service, "Welcome"), @Services.SessionManager.GetInstance.User.Name</p>
             </div>
         }
         else
         {
-            <a href="@Url.Action("Login", "Login")">Iniciar Sesión</a>
+    <a href="@Url.Action("Login", "Login")">@translator.GetTraduction(service, "Login")</a>
         }
     </nav>
     <header>
@@ -94,16 +108,16 @@
     </header>
     <nav>
         <a @Url.Action("Index", "Home")>Internet</a>
-        <a href="https://es.euronews.com/noticias/internacional">Tienda</a>
-        <a href="https://es.euronews.com/business">Portabilidad</a>
-        <a href="@Url.Action("Plans", "Home")">Planes</a>
+        <a href="https://es.euronews.com/noticias/internacional">@translator.GetTraduction(service, "Store")</a>
+        <a href="https://es.euronews.com/business">@translator.GetTraduction(service, "Portability")</a>
+        <a href="@Url.Action("Plans", "Home")">@translator.GetTraduction(service, "Plans")</a>
         <a href="https://es.euronews.com/green">TV</a>
     </nav>
     <form action="@Url.Action("AddLanguage", "Idioma")" method="post">
         <div class="textBoxContainer">
-            Nombre: <input type="text" name="name" required />
+            @translator.GetTraduction(service, "Name"): <input type="text" name="name" required />
         </div>
-        <button class="btnRemover" type="submit">Crear Idioma</button>
+        <button class="btnRemover" type="submit">@translator.GetTraduction(service, "CreateLanguage")</button>
     </form>
     <br />
     <div class="contenedor-tabla">
@@ -111,9 +125,9 @@
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Idioma</th>
+                    <th>@translator.GetTraduction(service, "Language")</th>
                     <th>Tag</th>
-                    <th>Texto</th>
+                    <th>@translator.GetTraduction(service, "Text")</th>
                     <th></th>
                     <th></th>
                 </tr>
@@ -129,7 +143,7 @@
                             <td><input type="text" name="name" value="@lang.Name" /></td>
                             <td><input type="text" name="tag" value="@tran.Name" /></td>
                             <td><input type="text" name="text" value="@tran.Text" /></td>
-                            <td><button class="btnRemover" type="submit">Modificar</button></td>
+                            <td><button class="btnRemover" type="submit">@translator.GetTraduction(service, "Modify")</button></td>
                             </form>
                         </tr>
                     }

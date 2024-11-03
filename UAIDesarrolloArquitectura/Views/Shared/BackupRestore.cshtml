@@ -1,6 +1,19 @@
 ﻿
 @{
     ViewBag.Title = "BackupRestore";
+    Services.Idioma.Translator translator = new Services.Idioma.Translator();
+    UAIDesarrolloArquitectura.Controllers.IdiomaController lC = new UAIDesarrolloArquitectura.Controllers.IdiomaController();
+    lC.InitializeController();
+    Services.LanguageService service = lC.getService();
+    service.Susbcribe(translator);
+    if (Services.SessionManager.IsLogged())
+    {
+        service.ChangeLanguage((Services.SessionManager.GetInstance.User.LanguageId).ToString());
+    }
+    else
+    {
+        if (!service.SelectedLanguageExists()) { service.ChangeLanguage("1"); }
+    }
 }
 
 <!DOCTYPE html>
@@ -13,7 +26,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Chivo:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-    <title>Respaldar/Restaurar Base de Datos</title>
+    <title>@translator.GetTraduction(service, "Restoredb")</title>
     <style>
         .contenedor-backup-restore {
             margin: 150px auto;
@@ -56,11 +69,12 @@
         @if (Services.SessionManager.IsLogged())
         {
             <div class="opciones">
-                <a href="@Url.Action("Logout", "Home")">Cerrar Sesión</a>
-                <a href="@Url.Action("Index", "Home")">Inicio</a>
-                <a style="display:none;" id="bitacora" href="@Url.Action("Bitacora", "Bitacora")">Bitácora</a>
-                <a style="display:none;" id="abmusuarios" href="@Url.Action("ABMUsuarios", "ABM")">Gestión de usuarios</a>
-                <a style="display:none;" id="restore" href="#">Respaldar/Restaurar Base de Datos</a>
+                <a href="@Url.Action("Logout", "Home")">@translator.GetTraduction(service, "Logout")</a>
+                <a href="@Url.Action("Index", "Home")">@translator.GetTraduction(service, "Main")</a>
+                <a style="display:none;" id="bitacora" href="@Url.Action("Bitacora", "Bitacora")">@translator.GetTraduction(service, "Log")</a>
+                <a style="display:none;" id="abmusuarios" href="@Url.Action("ABMUsuarios", "ABM")">@translator.GetTraduction(service, "ManageUser")</a>
+                <a style="display:none;" id="restore" href="#">@translator.GetTraduction(service, "Restoredb")</a>
+                <a style="display:none;" id="1001" href="@Url.Action("ABMIdioma", "Idioma")">@translator.GetTraduction(service, "ManageLanguage")</a>
                 <script type="text/javascript">
                      @foreach (string permission in Services.SessionManager.GetInstance.User.permissionList)
                      {
@@ -69,16 +83,16 @@
                          </text>
                      }
                 </script>
-                <a href="@Url.Action("Carrito", "Carrito")">Carrito</a>
+                <a href="@Url.Action("Carrito", "Carrito")">@translator.GetTraduction(service, "Cart")</a>
             </div>
             <div class="opciones">
                 <img src="~/assets/user-image-with-black-background-svgrepo-com.svg" width="30px" />
-                <p style='color: black; white-space: nowrap;'>Bienvenido, @Services.SessionManager.GetInstance.User.Name</p>
+                <p style='color: black; white-space: nowrap;'>@translator.GetTraduction(service, "Welcome"), @Services.SessionManager.GetInstance.User.Name</p>
             </div>
         }
         else
         {
-            <a href="@Url.Action("Login", "Login")">Iniciar Sesión</a>
+    <a href="@Url.Action("Login", "Login")">@translator.GetTraduction(service, "Login")</a>
         }
     </nav>
     <header>
@@ -86,18 +100,18 @@
     </header>
     <nav>
         <a href="/pages/contacto.html">Internet</a>
-        <a href="https://es.euronews.com/noticias/internacional">Tienda</a>
-        <a href="https://es.euronews.com/business">Portabilidad</a>
-        <a href="@Url.Action("Plans", "Home")">Planes</a>
+        <a href="https://es.euronews.com/noticias/internacional">@translator.GetTraduction(service, "Store")</a>
+        <a href="https://es.euronews.com/business">@translator.GetTraduction(service, "Portability")</a>
+        <a href="@Url.Action("Plans", "Home")">@translator.GetTraduction(service, "Plans")</a>
         <a href="https://es.euronews.com/green">TV</a>
     </nav>
     <div class="contenedor-backup-restore">
-        <a class="boton" href="@Url.Action("Backup", "Backup")">Generar Respaldo</a>
+        <a class="boton" href="@Url.Action("Backup", "Backup")">@translator.GetTraduction(service, "CreateBackup")</a>
         <form action="/Backup/Restore" method="post">
             <div class="contenedor-botones-restore">
                 <input type="hidden" name="ReturnUrl" value="@Url.Action("BackupRestore")" />
-                <input type="text" name="path" placeholder="Ingrese la ruta del archivo de respaldo" required />
-                <input class="boton" type="submit" value="Restaurar" />
+                <input type="text" name="path" placeholder="@translator.GetTraduction(service, "BackupRoute")" required />
+                <input class="boton" type="submit" value="@translator.GetTraduction(service, "Restore")" />
             </div>
         </form>
     </div>
@@ -107,11 +121,11 @@
             let isSuccess = @TempData["IsSuccess"].ToString().ToLower();
             if (isSuccess)
             {
-                alert('La restauración fue un éxito');
+                alert(@translator.GetTraduction(service, "BackupSuccess"));
             }
             else
             {
-                alert('Hubo un error al restaurar de la base de datos. Verifique la ruta del archivo de respaldo')
+                alert(@translator.GetTraduction(service, "BackupFail"))
             }
         </script>
     }

@@ -4,6 +4,19 @@
 <html lang="es">
 @{
     ViewBag.Title = "CorruptDatabaseMessage";
+    Services.Idioma.Translator translator = new Services.Idioma.Translator();
+    UAIDesarrolloArquitectura.Controllers.IdiomaController lC = new UAIDesarrolloArquitectura.Controllers.IdiomaController();
+    lC.InitializeController();
+    Services.LanguageService service = lC.getService();
+    service.Susbcribe(translator);
+    if (Services.SessionManager.IsLogged())
+    {
+        service.ChangeLanguage((Services.SessionManager.GetInstance.User.LanguageId).ToString());
+    }
+    else
+    {
+        if (!service.SelectedLanguageExists()) { service.ChangeLanguage("1"); }
+    }
 }
 <head>
     <meta charset="UTF-8">
@@ -58,8 +71,8 @@
         <div class="message">
             @if (Services.SessionManager.GetInstance != null && Services.SessionManager.GetInstance.User.Name=="webmaster")
             {
-                <p>La base de datos está corrupta.</p>
-                <p> Lista de errores: </p>
+                <p>@translator.GetTraduction(service, "Corruptdb").</p>
+                <p> @translator.GetTraduction(service, "ErrorList"): </p>
                 <ul>
                     @if (Model != null)
                     {
@@ -69,12 +82,12 @@
                         }
                     }
                 </ul>
-                <p>Elija cómo proceder</p>
+                <p>@translator.GetTraduction(service, "Howtoproceed")</p>
                 <div class="contenedor-botones">
                     <form action="/Backup/Restore" method="post">
                         <div class="contenedor-botones-restore">
                             <input type="hidden" name="ReturnUrl" value="@Url.Action("CorrupDatabaseMessage")" />
-                            <input type="text" name="path" placeholder="Ingrese la ruta del archivo de respaldo" required />
+                            <input type="text" name="path" placeholder="@translator.GetTraduction(service, "Corruptdb")" required />
                             <br />
                             <input type="submit" value="Restaurar" />
                         </div>
@@ -87,7 +100,7 @@
                         if (isSuccess)
                         {
                             //Mostramos un mensaje confirmandolo
-                            alert('La restauración fue un éxito');
+                            alert(@translator.GetTraduction(service, "BackupSuccess"));
                             //Llamamos a la vista login
                             window.location.href = '@Url.Action("Login", "Login")';
                         }
@@ -95,7 +108,7 @@
                         else
                         {
                             //Mostramos un mensaje confirmandolo y nos quedamos acá
-                            alert('Hubo un error al restaurar de la base de datos. Verifique la ruta del archivo de respaldo')
+                            alert(@translator.GetTraduction(service, "BackupFail"))
                         }
                         </script>
                     }
@@ -103,22 +116,22 @@
                         @if (ViewData["SetCheckDigitsIsSuccess"] != null)
                         {
                             <script type="text/javascript">
-                                alert('Se calcularon los dígitos verificadores con éxito');
+                                alert(@translator.GetTraduction(service, "CalculateDigitSuccess"));
                                 window.location.href = '@Url.Action("Login", "Login")';
                             </script>
 
                         }
-                        <a href="@Url.Action("SetCheckDigits", "Backup")">Recalcular Dígitos Verificadores</a>
+                    <a href="@Url.Action("SetCheckDigits", "Backup")">@translator.GetTraduction(service, "CalculateDigit")</a>
                     </div>
                     <div>
-                        <a href="@Url.Action("Login", "Login")">Salir</a>
+                        <a href="@Url.Action("Login", "Login")">@translator.GetTraduction(service, "Leave")</a>
                     </div>
                 </div>
             }
             else
             {
-                <p> Bersonal no está disponible en este momento. Vuelva más tarde y disculpe las molestias.</p>
-                <a href="@Url.Action("Login", "Login")">Salir</a>
+                <p> @translator.GetTraduction(service, "CalculateDigitSuccess").</p>
+                <a href="@Url.Action("Login", "Login")">@translator.GetTraduction(service, "Leave")</a>
             }
         </div>
     </div>

@@ -46,7 +46,6 @@ namespace UAIDesarrolloArquitectura.Controllers
             }
 
             service.ChangeLanguage(valorSeleccionado);
-            // Aquí puedes procesar tanto el valor seleccionado como la URL actual
             return Redirect(urlActual);
         }
         public System.Web.Mvc.ActionResult ABMIdioma()
@@ -65,8 +64,23 @@ namespace UAIDesarrolloArquitectura.Controllers
         [HttpPost]
         public ActionResult AddLanguage(string name)
         {
-            dal_language.AddLanguage(name);
             List<Language> langList = dal_language.GetLanguages();
+            List<string> tags = new List<string>();
+            foreach(Translate tr in langList[0].ListTranslate)
+            {
+                tags.Add(tr.Name);
+            }
+            dal_language.AddLanguage(name);
+            int id = dal_language.GetLastId();
+            dal_language.AddTags(id, tags);
+            List<int> ids = new List<int>();
+            foreach(Language l in langList)
+            {
+                ids.Add(l.Id);
+            }
+            ids.Add(id);
+            dal_language.AddTagForItself(ids, name);
+            langList = dal_language.GetLanguages();
             return View("ABMIdioma", langList);
         }
         [HttpPost]

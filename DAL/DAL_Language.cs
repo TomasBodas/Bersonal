@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Net;
 using System.Xml.Linq;
+using System.Collections;
 
 namespace DAL
 {
@@ -66,6 +67,75 @@ namespace DAL
                         command.Parameters.AddWithValue("@nombre", name);
                         command.ExecuteNonQuery();
                     }
+                    connection.Close();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Error al insertar los datos: " + ex.Message);
+                }
+            }
+        }
+        public void AddTags(int id, List<string> tags)
+        {
+            using (SqlConnection connection = new SqlConnection(CONNECTION_STRING))
+            {
+                try
+                {
+                    connection.Open();
+                    string query = "INSERT INTO traduccion (IdiomaId, Tag, Texto) VALUES (@id, @tag, '')";
+                    foreach (string s in tags)
+                    {
+                        using (SqlCommand command = new SqlCommand(query, connection))
+                        {
+                            command.Parameters.AddWithValue("@id", id);
+                            command.Parameters.AddWithValue("@tag", s);
+                            command.ExecuteNonQuery();
+                        }
+                    }
+                    connection.Close();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Error al insertar los datos: " + ex.Message);
+                }
+            }
+        }
+        public int GetLastId()
+        {
+            using (SqlConnection connection = new SqlConnection(CONNECTION_STRING))
+            {
+                DataTable dt = new DataTable();
+                try
+                {
+                    SqlCommand cmd = new SqlCommand("SELECT Id FROM idioma ORDER BY Id DESC", con);
+                    SqlDataAdapter da = new SqlDataAdapter(cmd);
+                    da.Fill(dt);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Error al insertar los datos: " + ex.Message);
+                }
+                return int.Parse(dt.Rows[0].ItemArray[0].ToString());
+            }
+        } 
+        public void AddTagForItself(List<int> ids, string name)
+        {
+            using (SqlConnection connection = new SqlConnection(CONNECTION_STRING))
+            {
+                try
+                {
+                    connection.Open();
+                    string query = "INSERT INTO traduccion (IdiomaId, Tag, Texto) VALUES (@id, @tag, '')";
+                    foreach (int i in ids)
+                    {
+                        using (SqlCommand command = new SqlCommand(query, connection))
+                        {
+                            command.Parameters.AddWithValue("@id", i);
+                            command.Parameters.AddWithValue("@tag", name);
+                            command.ExecuteNonQuery();
+                        }
+                    }
+                    connection.Close();
                 }
                 catch (Exception ex)
                 {
@@ -88,6 +158,7 @@ namespace DAL
                         command.Parameters.AddWithValue("@text", text);
                         command.ExecuteNonQuery();
                     }
+                    connection.Close();
                 }
                 catch (Exception ex)
                 {
