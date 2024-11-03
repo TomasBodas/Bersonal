@@ -22,7 +22,7 @@ namespace DAL
                 try
                 {
                     connection.Open();
-                    string query = "INSERT INTO usuario (nombre, apellido, DNI, email, contrasena, ID_Perfil) VALUES (@Nombre, @Apellido, @DNI, @Email, @Contraseña, @ID_Perfil)";
+                    string query = "INSERT INTO usuario (nombre, apellido, DNI, email, contrasena, IdPerfil) VALUES (@Nombre, @Apellido, @DNI, @Email, @Contraseña, @IdPerfil)";
                     using (SqlCommand command = new SqlCommand(query, connection))
                     {
                         command.Parameters.AddWithValue("@Nombre", Name);
@@ -34,14 +34,14 @@ namespace DAL
                         {
                             if (Name == "webmaster")
                             {
-                                command.Parameters.AddWithValue("@ID_Perfil", 2);
+                                command.Parameters.AddWithValue("@IdPerfil", 2);
                             }
                             if (Name == "admin")
                             {
-                                command.Parameters.AddWithValue("@ID_Perfil", 1);
+                                command.Parameters.AddWithValue("@IdPerfil", 1);
                             }
                         }
-                        else command.Parameters.AddWithValue("@ID_Perfil", 3);
+                        else command.Parameters.AddWithValue("@IdPerfil", 3);
                         command.ExecuteNonQuery();
                     }
                 }

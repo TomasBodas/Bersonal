@@ -4,6 +4,12 @@
 <html lang="es">
 @{
     ViewBag.Title = "Index";
+    Services.Idioma.Translator translator = new Services.Idioma.Translator();
+    UAIDesarrolloArquitectura.Controllers.IdiomaController lC = new UAIDesarrolloArquitectura.Controllers.IdiomaController();
+    lC.InitializeController();
+    Services.LanguageService service = lC.getService();
+    service.Susbcribe(translator);
+    if (!service.SelectedLanguageExists()) { service.ChangeLanguage("1"); }
 }
 
 <head>
@@ -24,7 +30,7 @@
         {
             <div id="opciones" class="opciones">
                 <a href="@Url.Action("Logout", "Home")">Cerrar Sesión</a>
-                <a style="display:none;" id="bitacora" href="@Url.Action("Bitacora", "Bitacora")">Bitácora</a>
+                <a style="display:none;" id="bitacora" href="@Url.Action("Bitacora", "Bitacora")">@translator.GetTraduction(service, "Log")</a>
                 <a style="display:none;" id="abmusuarios" href="@Url.Action("ABMUsuarios", "ABM")">Gestión de usuarios</a>
                 <a style="display:none;" id="restore" href="@Url.Action("BackupRestore", "Backup")">Respaldar/Restaurar Base de Datos</a>
                 <script type="text/javascript">
@@ -45,8 +51,15 @@
         }
         else
         {
-            <a href="@Url.Action("Login", "Login")">Iniciar Sesión</a>
-            <a href="@Url.Action("Register", "Register")">Registrarse</a>
+            <a href="@Url.Action("Login", "Login")">@translator.GetTraduction(service, "Login")</a>
+            <a href="@Url.Action("Register", "Register")">@translator.GetTraduction(service, "Register")</a>
+            <form>
+                <select id="option">
+                    <option value="1">Español</option>
+                    <option value="2">English</option>
+                </select>
+                <button onclick="enviarValor()">Enviar Valor</button>
+            </form>
         }
     </nav>
     <header>
@@ -106,6 +119,37 @@
     <footer>
         Copyright © Personal 2024
     </footer>
+    <script>
+        function enviarValor() {
+            var select = document.getElementById("option");
+            var valorSeleccionado = select.value; // Obtiene el valor seleccionado
+            var urlActual = window.location.href; // Obtiene la URL actual de la página
 
+            // Envío del valor y la URL al controlador usando fetch
+            fetch('/Idioma/SetLanguage', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    valor: valorSeleccionado, // Valor seleccionado del select
+                    url: urlActual // URL actual de la página
+                })
+            })
+                .then(response => {
+                    if (response.ok) {
+                        return response.json();
+                    } else {
+                        throw new Error('Error al enviar los datos al servidor.');
+                    }
+                })
+                .then(data => {
+                    console.log('Respuesta del servidor:', data);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+    </script>
 </body>
 </html>
