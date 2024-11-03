@@ -3,6 +3,8 @@
 <!DOCTYPE html>
 <html lang="es">
 @{
+    //BLL.BLL_CheckDigitsManager bl = new BLL.BLL_CheckDigitsManager();
+    //bl.SetCheckDigits();
     ViewBag.Title = "Index";
     Services.Idioma.Translator translator = new Services.Idioma.Translator();
     UAIDesarrolloArquitectura.Controllers.IdiomaController lC = new UAIDesarrolloArquitectura.Controllers.IdiomaController();
@@ -33,6 +35,7 @@
                 <a style="display:none;" id="bitacora" href="@Url.Action("Bitacora", "Bitacora")">@translator.GetTraduction(service, "Log")</a>
                 <a style="display:none;" id="abmusuarios" href="@Url.Action("ABMUsuarios", "ABM")">Gestión de usuarios</a>
                 <a style="display:none;" id="restore" href="@Url.Action("BackupRestore", "Backup")">Respaldar/Restaurar Base de Datos</a>
+                <a style="display:none;" id="1001" href="@Url.Action("ABMIdioma", "Idioma")">Gestión de idioma</a>
                 <script type="text/javascript">
                      @foreach (string permission in Services.SessionManager.GetInstance.User.permissionList)
                      {

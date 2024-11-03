@@ -7,6 +7,8 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Net;
+using System.Xml.Linq;
 
 namespace DAL
 {
@@ -50,6 +52,48 @@ namespace DAL
                 list.Add(aux);
             }
             return list;
+        }
+        public void AddLanguage(string name)
+        {
+            using (SqlConnection connection = new SqlConnection(CONNECTION_STRING))
+            {
+                try
+                {
+                    connection.Open();
+                    string query = "INSERT INTO idioma (Nombre) VALUES (@nombre)";
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@nombre", name);
+                        command.ExecuteNonQuery();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Error al insertar los datos: " + ex.Message);
+                }
+            }
+        }
+        public void ModifyTranslate(int id, string tag, string text)
+        {
+            using (SqlConnection connection = new SqlConnection(CONNECTION_STRING))
+            {
+                try
+                {
+                    connection.Open();
+                    string query = "UPDATE traduccion SET Texto = @text WHERE IdiomaId = @language AND Tag = @tag";
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@language", id);
+                        command.Parameters.AddWithValue("@tag", tag);
+                        command.Parameters.AddWithValue("@text", text);
+                        command.ExecuteNonQuery();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Error al insertar los datos: " + ex.Message);
+                }
+            }
         }
     }
 }
