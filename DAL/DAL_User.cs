@@ -22,7 +22,7 @@ namespace DAL
                 try
                 {
                     connection.Open();
-                    string query = "INSERT INTO usuario (nombre, apellido, DNI, email, contrasena, ID_Perfil) VALUES (@Nombre, @Apellido, @DNI, @Email, @Contraseña, @ID_Perfil)";
+                    string query = "INSERT INTO usuario (nombre, apellido, DNI, email, contrasena, IdPerfil, idiomaId) VALUES (@Nombre, @Apellido, @DNI, @Email, @Contraseña, @IdPerfil, @idioma)";
                     using (SqlCommand command = new SqlCommand(query, connection))
                     {
                         command.Parameters.AddWithValue("@Nombre", Name);
@@ -30,18 +30,19 @@ namespace DAL
                         command.Parameters.AddWithValue("@DNI", DNI);
                         command.Parameters.AddWithValue("@Email", Email);
                         command.Parameters.AddWithValue("@Contraseña", HashPassword);
+                        command.Parameters.AddWithValue("@idioma", 1);
                         if (Name == "webmaster" || Name == "admin")
                         {
                             if (Name == "webmaster")
                             {
-                                command.Parameters.AddWithValue("@ID_Perfil", 2);
+                                command.Parameters.AddWithValue("@IdPerfil", 2);
                             }
                             if (Name == "admin")
                             {
-                                command.Parameters.AddWithValue("@ID_Perfil", 1);
+                                command.Parameters.AddWithValue("@IdPerfil", 1);
                             }
                         }
-                        else command.Parameters.AddWithValue("@ID_Perfil", 3);
+                        else command.Parameters.AddWithValue("@IdPerfil", 3);
                         command.ExecuteNonQuery();
                     }
                 }
@@ -90,7 +91,7 @@ namespace DAL
             {
                 connection.Open();
 
-                string selectUserQuery = $"SELECT id, nombre, apellido, DNI, email, contrasena, ID_Perfil FROM usuario WHERE email = '{email}'";
+                string selectUserQuery = $"SELECT id, nombre, apellido, DNI, email, contrasena, IdPerfil, idiomaId FROM usuario WHERE email = '{email}'";
                 int profileId = 0;
 
                 using (SqlCommand selectUserCommand = new SqlCommand(selectUserQuery, connection))
@@ -102,12 +103,13 @@ namespace DAL
                         {
                             user = new User(new object[] 
                             {
-                                (int) sqlReader[0],
-                                (string) sqlReader[1],
-                                (string) sqlReader[2],
-                                (int) sqlReader[3],
-                                (string) sqlReader[4],
-                                (string) sqlReader[5],     
+                                sqlReader[0],
+                                sqlReader[1],
+                                sqlReader[2],
+                                sqlReader[3],
+                                sqlReader[4],
+                                sqlReader[5], 
+                                sqlReader[7],
                             });
                             profileId = (int)sqlReader[6];
                         }
@@ -184,7 +186,7 @@ namespace DAL
         {
             using (SqlConnection connection = new SqlConnection(CONNECTION_STRING))
             {
-                string updateUserQuery = $"UPDATE usuario SET nombre='{user.Name}', apellido='{user.Surname}', DNI={user.DNI}, email='{user.Email}' WHERE id={user.id}";
+                string updateUserQuery = $"UPDATE usuario SET nombre='{user.Name}', apellido='{user.Surname}', DNI={user.DNI}, email='{user.Email}', idiomaid = '{user.LanguageId}' WHERE id={user.id}";
                 SqlCommand updateUserQueryCommand = new SqlCommand(updateUserQuery, connection);
                 connection.Open();
                 updateUserQueryCommand.ExecuteNonQuery();
