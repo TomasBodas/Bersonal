@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DAL_Language.cs" />
     <Compile Include="DAL_Log.cs" />
     <Compile Include="DAL_Permission.cs" />
     <Compile Include="DAL_User.cs" />

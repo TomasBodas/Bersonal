@@ -5,7 +5,7 @@
     Services.Idioma.Translator translator = new Services.Idioma.Translator();
     UAIDesarrolloArquitectura.Controllers.IdiomaController lC = new UAIDesarrolloArquitectura.Controllers.IdiomaController();
     lC.InitializeController();
-    Services.LanguageService service = lC.getService();
+    Services.LanguageService service = lC.GetService();
     service.Susbcribe(translator);
     if (Services.SessionManager.IsLogged())
     {

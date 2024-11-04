@@ -42,6 +42,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataBaseServices.cs" />
+    <Compile Include="Idioma\Language.cs" />
+    <Compile Include="Idioma\Translate.cs" />
+    <Compile Include="Idioma\Translator.cs" />
+    <Compile Include="LanguageService.cs" />
     <Compile Include="Models\Log.cs" />
     <Compile Include="PasswordEncrypter.cs" />
     <Compile Include="Perfiles\Auth.cs" />
