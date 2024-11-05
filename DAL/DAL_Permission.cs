@@ -9,6 +9,9 @@ using Services.Models;
 using System.Xml;
 using Services.Perfiles;
 using Services;
+using System.Security.Policy;
+using System.Data.SqlTypes;
+using System.Security.Cryptography;
 
 namespace DAL
 {
@@ -117,7 +120,7 @@ namespace DAL
                                 }
                                 else
                                 {
-                                    auth = new Role(new object[] { (string)reader[0], (int)reader[1], reader[2].ToString() }); 
+                                    auth = new Role(new object[] { (string)reader[0], (int)reader[1], reader[2].ToString()}); 
                                 }
                             }
                         }
@@ -150,6 +153,135 @@ namespace DAL
                 }
             }
             return auth;
+        }
+        public List<Role> GetRoles()
+        {
+            List<Role> roles = new List<Role>(); 
+            using (SqlConnection connection = new SqlConnection(CONNECTION_STRING))
+            {
+
+                string query = "SELECT * FROM Permiso WHERE PermisoAtomico IS NULL";
+                SqlCommand command = new SqlCommand(query, connection);
+                connection.Open();
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        Role role = new Role(new object[] { reader.GetString(0), reader.GetInt32(1)});
+                        role.children = GetAll(reader.GetInt32(1));
+                        roles.Add(role);
+                    }
+                }
+            }
+            return roles;
+        }
+        public List<Permission> GetPermissions()
+        {
+            List<Permission> permissions = new List<Permission>();
+            using (SqlConnection connection = new SqlConnection(CONNECTION_STRING))
+            {
+
+                string query = "SELECT * FROM Permiso WHERE PermisoAtomico IS NOT NULL";
+                SqlCommand command = new SqlCommand(query, connection);
+                connection.Open();
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        Permission permission = new Permission(new object[] { reader.GetString(0), reader.GetInt32(1), reader.GetInt32(2) });
+                        permissions.Add(permission);
+                    }
+                }
+            }
+            return permissions;
+        }
+
+        public void SaveProfile(string profileName)
+        {
+            using (SqlConnection connection = new SqlConnection(CONNECTION_STRING))
+            {
+                try
+                {
+                    connection.Open();
+                    string insertQuery = $"INSERT INTO perfil (Nombre) VALUES ('{profileName}')";
+                    using (SqlCommand insertCommand = new SqlCommand(insertQuery, connection))
+                    {
+                        insertCommand.ExecuteNonQuery();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Error al insertar los datos: " + ex.Message);
+                }
+            }
+        }
+        public void AddAuthToProfile(string authName)
+        {
+            using (SqlConnection connection = new SqlConnection(CONNECTION_STRING))
+            {
+                try
+                {
+                    connection.Open();
+                    int authID = 0;
+                    int profileID = 0;
+                    //Obtenemos el id del permiso
+                    string selectQuery1 = $"SELECT * FROM Permiso WHERE Nombre = '{authName}'";
+                    SqlCommand selectCommand1 = new SqlCommand(selectQuery1, connection);
+                    using (SqlDataReader reader = selectCommand1.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            authID = reader.GetInt32(1);
+                        }
+                    }
+                    //Obtenemos el id del perfil
+                    string selectQuery2 = "SELECT TOP 1 * FROM perfil ORDER BY Id DESC";
+                    SqlCommand selectCommand2 = new SqlCommand(selectQuery2, connection);
+                    using (SqlDataReader reader = selectCommand2.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            profileID = reader.GetInt32(0);
+                        }
+                    }
+                    //Creamos la relación perfil - permiso
+                    string insertQuery = $"INSERT INTO perfil_permiso (Id_Perfil, Id_Permiso) VALUES ({profileID}, {authID})";
+                    using (SqlCommand insertCommand = new SqlCommand(insertQuery, connection))
+                    {
+                        insertCommand.ExecuteNonQuery();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Error al insertar los datos: " + ex.Message);
+                }
+            }
+        }
+        public static List<string> GetProfiles()
+        {
+            List<string> profiles = new List<string>();
+            using (SqlConnection connection = new SqlConnection(CONNECTION_STRING))
+            {
+                try
+                {
+                    connection.Open();
+                    string selectQuery = $"SELECT * FROM Perfil";
+                    SqlCommand selectCommand = new SqlCommand(selectQuery, connection);
+                    using (SqlDataReader reader = selectCommand.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            profiles.Add(reader.GetString(1));
+                        }
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Error al obtener los datos: " + ex.Message);
+                }
+            }
+            return profiles;
         }
     }
 }

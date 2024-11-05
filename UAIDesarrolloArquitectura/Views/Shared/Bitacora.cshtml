@@ -50,6 +50,8 @@
                 <a style="display:none;" id="bitacora" href="#">Bitácora</a>
                 <a style="display:none;" id="abmusuarios" href="@Url.Action("ABMUsuarios", "ABM")">Gestión de usuarios</a>
                 <a style="display:none;" id="restore" href="@Url.Action("BackupRestore", "Backup")">Respaldar/Restaurar Base de Datos</a>
+                <a style="display:none;" id="crearperfiles" href="@Url.Action("CrearPerfiles", "CrearPerfiles")">Crear Perfiles</a>
+                <a style="display:none;" id="asignarperfiles" href="@Url.Action("AsignarPerfil", "AsignarPerfil")">Asignar Perfiles</a>
                 <script type="text/javascript">
                      @foreach (string permission in Services.SessionManager.GetInstance.User.permissionList)
                      {

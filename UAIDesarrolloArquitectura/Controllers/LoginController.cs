@@ -72,7 +72,7 @@ namespace UAIDesarrolloArquitectura.Controllers
                 {
                     if (auth is Permission)
                     {
-                        pUser.permissionList.Add(auth.Name);
+                        pUser.permissionList.Add(auth.Permission.ToString());
                     }
                     else Recorrer(auth, pUser);
                 }

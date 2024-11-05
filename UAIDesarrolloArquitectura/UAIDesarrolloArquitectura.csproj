@@ -120,6 +120,8 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\AsignarPerfilController.cs" />
+    <Compile Include="Controllers\CrearPerfilesController.cs" />
     <Compile Include="Controllers\ABMController.cs" />
     <Compile Include="Controllers\BitacoraController.cs" />
     <Compile Include="Controllers\CarritoController.cs" />
@@ -130,8 +132,11 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\ViewModel\AsignacionPerfilUsuarioModel.cs" />
+    <Compile Include="Models\ViewModel\CrearPerfilViewModel.cs" />
     <Compile Include="Models\ViewModel\BackupViewModel.cs" />
     <Compile Include="Models\ViewModel\LoginViewModel.cs" />
+    <Compile Include="Models\ViewModel\PerfilesViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -176,6 +181,8 @@
     <Content Include="Views\Shared\Bitacora.cshtml" />
     <Content Include="Views\Shared\ABMUsuarios.cshtml" />
     <Content Include="Views\Shared\BackupRestore.cshtml" />
+    <Content Include="Views\Shared\CrearPerfiles.cshtml" />
+    <Content Include="Views\Shared\AsignarPerfil.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

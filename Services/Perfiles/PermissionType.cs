@@ -12,5 +12,7 @@ namespace Services.Perfiles
         bitacora,
         restore,
         abmusuarios,
+        crearperfiles,
+        asignarperfiles,
     }
 }
