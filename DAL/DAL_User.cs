@@ -22,7 +22,7 @@ namespace DAL
                 try
                 {
                     connection.Open();
-                    string query = "INSERT INTO usuario (nombre, apellido, DNI, email, contrasena, IdPerfil, idiomaId) VALUES (@Nombre, @Apellido, @DNI, @Email, @Contraseña, @IdPerfil, @idioma)";
+                    string query = "INSERT INTO usuario (nombre, apellido, DNI, email, contrasena, Id_Perfil, idiomaId) VALUES (@Nombre, @Apellido, @DNI, @Email, @Contraseña, @IdPerfil, @idioma)";
                     using (SqlCommand command = new SqlCommand(query, connection))
                     {
                         command.Parameters.AddWithValue("@Nombre", Name);
@@ -91,7 +91,7 @@ namespace DAL
             {
                 connection.Open();
 
-                string selectUserQuery = $"SELECT id, nombre, apellido, DNI, email, contrasena, IdPerfil, idiomaId FROM usuario WHERE email = '{email}'";
+                string selectUserQuery = $"SELECT id, nombre, apellido, DNI, email, contrasena, Id_Perfil, idiomaId FROM usuario WHERE email = '{email}'";
                 int profileId = 0;
 
                 using (SqlCommand selectUserCommand = new SqlCommand(selectUserQuery, connection))

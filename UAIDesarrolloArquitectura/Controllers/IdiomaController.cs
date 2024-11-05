@@ -54,15 +54,10 @@ namespace UAIDesarrolloArquitectura.Controllers
             {
                 return RedirectToAction("Login", "Login");
             }
-
-            if (SessionManager.GetInstance.User.Name == "Lucas")
+            else
             {
                 List<Language> langList = dal_language.GetLanguages();
                 return View(langList);
-            }
-            else
-            {
-                return RedirectToAction("Index", "Home");
             }
         }
 
