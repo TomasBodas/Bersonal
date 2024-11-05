@@ -1,10 +1,13 @@
-﻿
+﻿@model Services.Idioma.Translate
+
 @{
-    ViewBag.Title = "BackupRestore";
+    ViewBag.Title = "UpdatePage";
+    Services.Idioma.Translate tr = ViewBag.tran;
+    Services.Idioma.Language lan = ViewBag.lan;
     Services.Idioma.Translator translator = new Services.Idioma.Translator();
     UAIDesarrolloArquitectura.Controllers.IdiomaController lC = new UAIDesarrolloArquitectura.Controllers.IdiomaController();
     lC.InitializeController();
-    Services.LanguageService service = lC.getService();
+    Services.LanguageService service = lC.GetService();
     service.Susbcribe(translator);
     if (Services.SessionManager.IsLogged())
     {
@@ -15,52 +18,59 @@
         if (!service.SelectedLanguageExists()) { service.ChangeLanguage("1"); }
     }
 }
-
 <!DOCTYPE html>
-
 <html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Usuarios</title>
     <link rel="stylesheet" href="~/Content/Site.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Chivo:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-    <title>@translator.GetTraduction(service, "Restoredb")</title>
     <style>
-        .contenedor-backup-restore {
-            margin: 150px auto;
-            width: 80%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            gap: 15px;
-            align-items: center;
+        .contenedor-tabla {
+            max-height: 400px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
         }
-        .boton {
+
+        table {
+            width: 80%;
+            margin: auto;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .btnRemover {
             padding: 10px;
             background-color: rgb(30, 100, 196);
             color: white;
+            align-items: center;
             border-style: none;
-            width: 180px;
-            font-size: 14px;
-            font-family: "Chivo", Arial, sans-serif;
-            text-decoration:none;
+            margin: 10px;
         }
-            .boton:hover {
+
+            .btnRemover:hover {
                 background-color: rgb(34, 124, 222);
                 cursor: pointer;
             }
-        .contenedor-botones-restore {
+
+        .textBoxContainer {
             display: flex;
-            align-items: center;
+            margin: 10px;
+            justify-content: center;
             gap: 5px;
-        }
-        input[type="text"] {
-            width: 300px;
-            border-style: none;
-            border-radius: 5px;
-            padding: 5px;
+            font-size: 13px;
         }
     </style>
 </head>
@@ -72,11 +82,9 @@
                 <a href="@Url.Action("Logout", "Home")">@translator.GetTraduction(service, "Logout")</a>
                 <a href="@Url.Action("Index", "Home")">@translator.GetTraduction(service, "Main")</a>
                 <a style="display:none;" id="bitacora" href="@Url.Action("Bitacora", "Bitacora")">@translator.GetTraduction(service, "Log")</a>
-                <a style="display:none;" id="abmusuarios" href="#">@translator.GetTraduction(service, "ManageUser")</a>
+                <a style="display:none;" id="abmusuarios" href="@Url.Action("ABMUsuarios", "ABM")">@translator.GetTraduction(service, "ManageUser")</a>
                 <a style="display:none;" id="restore" href="@Url.Action("BackupRestore", "Backup")">@translator.GetTraduction(service, "Restoredb")</a>
                 <a style="display:none;" id="1001" href="@Url.Action("ABMIdioma", "Idioma")">@translator.GetTraduction(service, "ManageLanguage")</a>
-                <a style="display:none;" id="crearperfiles" href="@Url.Action("CrearPerfiles", "CrearPerfiles")">Crear Perfiles</a>
-                <a style="display:none;" id="asignarperfiles" href="@Url.Action("AsignarPerfil", "AsignarPerfil")">Asignar Perfiles</a>
                 <script type="text/javascript">
                      @foreach (string permission in Services.SessionManager.GetInstance.User.permissionList)
                      {
@@ -101,35 +109,35 @@
         <h1>Bersonal</h1>
     </header>
     <nav>
-        <a href="/pages/contacto.html">Internet</a>
+        <a @Url.Action("Index", "Home")>Internet</a>
         <a href="https://es.euronews.com/noticias/internacional">@translator.GetTraduction(service, "Store")</a>
         <a href="https://es.euronews.com/business">@translator.GetTraduction(service, "Portability")</a>
         <a href="@Url.Action("Plans", "Home")">@translator.GetTraduction(service, "Plans")</a>
         <a href="https://es.euronews.com/green">TV</a>
     </nav>
-    <div class="contenedor-backup-restore">
-        <a class="boton" href="@Url.Action("Backup", "Backup")">@translator.GetTraduction(service, "CreateBackup")</a>
-        <form action="/Backup/Restore" method="post">
-            <div class="contenedor-botones-restore">
-                <input type="hidden" name="ReturnUrl" value="@Url.Action("BackupRestore")" />
-                <input type="text" name="path" placeholder="@translator.GetTraduction(service, "BackupRoute")" required />
-                <input class="boton" type="submit" value="@translator.GetTraduction(service, "Restore")" />
-            </div>
-        </form>
+    <div class="contenedor-tabla">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>@translator.GetTraduction(service, "Language")</th>
+                    <th>Tag</th>
+                    <th>@translator.GetTraduction(service, "Text")</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <form action="@Url.Action("UpdateTranslate", "Idioma")" method="post">
+                    <td><input type="hidden" name="id" value="@tr.Id" />@tr.Id</td>
+                    <td><input type="text" name="name" value="@lan.Name" /></td>
+                    <td><input type="text" name="tag" value="@tr.Name" /></td>
+                    <td><input type="text" name="text" value="@tr.Text" /></td>
+                    <td><button class="btnRemover" type="submit">@translator.GetTraduction(service, "Modify")</button></td>
+                    </form>
+                </tr>
+            </tbody>
+        </table>
     </div>
-    @if (TempData["IsSuccess"] != null)
-    {
-        <script type="text/javascript">
-            let isSuccess = @TempData["IsSuccess"].ToString().ToLower();
-            if (isSuccess)
-            {
-                alert(@translator.GetTraduction(service, "BackupSuccess"));
-            }
-            else
-            {
-                alert(@translator.GetTraduction(service, "BackupFail"))
-            }
-        </script>
-    }
 </body>
 </html>

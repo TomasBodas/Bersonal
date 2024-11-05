@@ -2,6 +2,19 @@
 <html lang="es">
 @{
     ViewBag.Title = "Plans";
+    Services.Idioma.Translator translator = new Services.Idioma.Translator();
+    UAIDesarrolloArquitectura.Controllers.IdiomaController lC = new UAIDesarrolloArquitectura.Controllers.IdiomaController();
+    lC.InitializeController();
+    Services.LanguageService service = lC.GetService();
+    service.Susbcribe(translator);
+    if (Services.SessionManager.IsLogged())
+    {
+        service.ChangeLanguage((Services.SessionManager.GetInstance.User.LanguageId).ToString());
+    }
+    else
+    {
+        if (!service.SelectedLanguageExists()) { service.ChangeLanguage("1"); }
+    }
 }
 <head>
     <meta charset="UTF-8">
@@ -32,11 +45,12 @@
         @if (Services.SessionManager.IsLogged())
         {
             <div class="opciones">
-                <a href="@Url.Action("Logout", "Home")">Cerrar Sesión</a>
-                <a href="@Url.Action("Index", "Home")">Inicio</a>
-                <a style="display:none;" id="bitacora" href="@Url.Action("Bitacora", "Bitacora")">Bitácora</a>
-                <a style="display:none;" id="abmusuarios" href="@Url.Action("ABMUsuarios", "ABM")">Gestión de usuarios</a>
-                <a style="display:none;" id="restore" href="@Url.Action("BackupRestore", "Backup")">Respaldar/Restaurar Base de Datos</a>
+                <a href="@Url.Action("Logout", "Home")">@translator.GetTraduction(service, "Logout")</a>
+                <a href="@Url.Action("Index", "Home")">@translator.GetTraduction(service, "Main")</a>
+                <a style="display:none;" id="bitacora" href="@Url.Action("Bitacora", "Bitacora")">@translator.GetTraduction(service, "Log")</a>
+                <a style="display:none;" id="abmusuarios" href="#">@translator.GetTraduction(service, "ManageUser")</a>
+                <a style="display:none;" id="restore" href="@Url.Action("BackupRestore", "Backup")">@translator.GetTraduction(service, "Restoredb")</a>
+                <a style="display:none;" id="1001" href="@Url.Action("ABMIdioma", "Idioma")">@translator.GetTraduction(service, "ManageLanguage")</a>
                 <a style="display:none;" id="crearperfiles" href="@Url.Action("CrearPerfiles", "CrearPerfiles")">Crear Perfiles</a>
                 <a style="display:none;" id="asignarperfiles" href="@Url.Action("AsignarPerfil", "AsignarPerfil")">Asignar Perfiles</a>
                 <script type="text/javascript">
@@ -47,17 +61,17 @@
                           </text>
                       }
                 </script>
-                <a href="@Url.Action("Carrito", "Carrito")">Carrito</a>
+                <a href="@Url.Action("Carrito", "Carrito")">@translator.GetTraduction(service, "Cart")</a>
             </div>
             <div class="opciones">
                 <img src="~/assets/user-image-with-black-background-svgrepo-com.svg" width="30px" />
-                <p style='color: black; white-space: nowrap;'>Bienvenido, @Services.SessionManager.GetInstance.User.Name</p>
+                <p style='color: black; white-space: nowrap;'>@translator.GetTraduction(service, "Welcome"), @Services.SessionManager.GetInstance.User.Name</p>
             </div>
         }
         else
         {
-            <a href="@Url.Action("Login", "Login")">Iniciar Sesión</a>
-            <a href="@Url.Action("Register", "Register")">Registrarse</a>
+    <a href="@Url.Action("Login", "Login")">@translator.GetTraduction(service, "Login")</a>
+    <a href="@Url.Action("Register", "Register")">@translator.GetTraduction(service, "Register")</a>
         }
     </nav>
     <header>
@@ -65,100 +79,63 @@
     </header>
     <nav>
         <a href="@Url.Action("Index", "Home")">Internet</a>
-        <a href="https://es.euronews.com/noticias/internacional">Tienda</a>
-        <a href="https://es.euronews.com/business">Portabilidad</a>
-        <a href="#">Planes</a>
+        <a href="https://es.euronews.com/noticias/internacional">@translator.GetTraduction(service, "Store")</a>
+        <a href="https://es.euronews.com/business">@translator.GetTraduction(service, "Portability")</a>
+        <a href="#">@translator.GetTraduction(service, "Plans")</a>
         <a href="https://es.euronews.com/green">TV</a>
     </nav>
     <div class="container">
-        <h3>Elegí el mejor plan de Internet móvil</h3>
+        <h3>@translator.GetTraduction(service, "ChooseBestPlan")</h3>
     </div>
     <div class="container">
         <div class="card">
             <div class="card-header">
-                <span class="badge">Más vendido</span>
-                <h2 class="h2-plans">Móvil 3 GB</h2>
-                <p class="list-price">Precio de lista <span class="strikethrough">$21.500</span></p>
-                <p class="final-price">
-                    @if (ViewBag.Precios != null && ViewBag.Precios.Length > 0)
-                    {
-                        decimal precioFinal = ViewBag.Precios[0];
-                        @precioFinal.ToString();
-                        <span>final por mes</span>
-                    }
-                    else
-                    {
-                        // Mensaje en caso de que no haya precios disponibles
-                        <span>No disponible</span>
-                    }
-                </p>
+                <span class="badge">@translator.GetTraduction(service, "MostSelled")</span>
+                <h2 class="h2-plans">@translator.GetTraduction(service, "Plan1Name")</h2>
+                <p class="list-price">@translator.GetTraduction(service, "Price") <span class="strikethrough">$21.500</span></p>
+                <p class="final-price">$8.600 <span>@translator.GetTraduction(service, "ForMonth")</span></p>
             </div>
-            <button onclick="addToCart('Plan de 3GB', '@(ViewBag.Precios != null && ViewBag.Precios.Length > 0 ? ViewBag.Precios[0].ToString() : "0")')" class="cta-button">¡Lo quiero!</button>
-            <p class="discount">60% OFF por 6 meses</p>
+            <button onclick="addToCart('Plan de 3GB','8600')" class="cta-button">@translator.GetTraduction(service, "IwantIt")</button>
+            <p class="discount">@translator.GetTraduction(service, "Discount")</p>
             <ul class="features">
-                <li>Roaming: WhatsApp gratis + 2 GB extra en limítrofes y EE.UU</li>
-                <li>Enviá mensajes de WhatsApp sin consumir datos de tu plan</li>
-                <li>3 GB para navegar en tu celu</li>
+                <li>@translator.GetTraduction(service, "Plan1Feature1")</li>
+                <li>@translator.GetTraduction(service, "Plan1Feature2")</li>
+                <li>@translator.GetTraduction(service, "Plan1Feature3")</li>
             </ul>
-            <a href="#" class="learn-more">Conocer más ></a>
-            <p class="footer-note">¡Incluye WhatsApp gratis y llamadas ilimitadas!</p>
-        </div>
-
-        <div class="card">
-            <div class="card-header">
-                <h2 class="h2-plans">Móvil 5 GB</h2>
-                <p class="list-price">Precio de lista <span class="strikethrough">$31.300</span></p>
-                <p class="final-price">
-                    @if (ViewBag.Precios != null && ViewBag.Precios.Length > 0)
-                    {
-                        decimal precioFinal = ViewBag.Precios[1];
-                        @precioFinal.ToString();
-                        <span>final por mes</span>
-                    }
-                    else
-                    {
-                        // Mensaje en caso de que no haya precios disponibles
-                        <span>No disponible</span>
-                    }
-                </p>
-            </div>
-            <button onclick="addToCart('Plan de 5GB', '@(ViewBag.Precios != null && ViewBag.Precios.Length > 0 ? ViewBag.Precios[1].ToString() : "0")')" class="cta-button">¡Lo quiero!</button>
-            <p class="discount">50% OFF por 6 meses</p>
-            <ul class="features">
-                <li>Roaming: WhatsApp gratis + 3 GB extra en América</li>
-                <li>SMS ilimitados y llamadas a América a precio local</li>
-                <li>5 GB para navegar en tu celu</li>
-            </ul>
-            <a href="#" class="learn-more">Conocer más ></a>
-            <p class="footer-note">¡Incluye WhatsApp gratis y llamadas ilimitadas!</p>
+            <a href="#" class="learn-more">@translator.GetTraduction(service, "Knowmore")</a>
+            <p class="footer-note">@translator.GetTraduction(service, "IncludeText")</p>
         </div>
         <div class="card">
             <div class="card-header">
-                <h2 class="h2-plans">Móvil 10 GB</h2>
-                <p class="list-price">Precio de lista <span class="strikethrough">$45.200</span></p>
-                <p class="final-price">
-                    @if (ViewBag.Precios != null && ViewBag.Precios.Length > 0)
-                    {
-                        decimal precioFinal = ViewBag.Precios[2];
-                        @precioFinal.ToString();
-                        <span>final por mes</span>
-                    }
-                    else
-                    {
-                        // Mensaje en caso de que no haya precios disponibles
-                        <span>No disponible</span>
-                    }
-                </p>
+                <h2 class="h2-plans">@translator.GetTraduction(service, "Plan2Name")</h2>
+                <p class="list-price">@translator.GetTraduction(service, "Price") <span class="strikethrough">$31.300</span></p>
+                <p class="final-price">$15.500 <span>@translator.GetTraduction(service, "ForMonth")</span></p>
             </div>
-            <button onclick="addToCart('Plan de 5GB', '@(ViewBag.Precios != null && ViewBag.Precios.Length > 0 ? ViewBag.Precios[2].ToString() : "0")')" class="cta-button">¡Lo quiero!</button>
-            <p class="discount">50% OFF por 6 meses</p>
+            <button onclick="addToCart('Plan de 5GB','15500')" class="cta-button">@translator.GetTraduction(service, "IwantIt")</button>
+            <p class="discount">@translator.GetTraduction(service, "Discount")</p>
+            <ul class="features">
+                <li>@translator.GetTraduction(service, "Plan1Feature1")</li>
+                <li>@translator.GetTraduction(service, "Plan1Feature2")</li>
+                <li>@translator.GetTraduction(service, "Plan1Feature3")</li>
+            </ul>
+            <a href="#" class="learn-more">@translator.GetTraduction(service, "Knowmore")</a>
+            <p class="footer-note">@translator.GetTraduction(service, "IncludeText")</p>
+        </div>
+        <div class="card">
+            <div class="card-header">
+                <h2 class="h2-plans">@translator.GetTraduction(service, "Plan3Name")</h2>
+                <p class="list-price">@translator.GetTraduction(service, "Price") <span class="strikethrough">$45.200</span></p>
+                <p class="final-price">$22.600 <span>@translator.GetTraduction(service, "ForMonth")</span></p>
+            </div>
+            <button onclick="addToCart('Plan de 10GB','22600')" class="cta-button">@translator.GetTraduction(service, "IwantIt")</button>
+            <p class="discount">@translator.GetTraduction(service, "Discount")</p>
             <ul class="features">
                 <li>Roaming: WhatsApp gratis + 5 GB extra en América</li>
                 <li>Guardá los gigas sobrantes para el mes siguiente</li>
                 <li>Flow Pass: 10 GB gratis por mes para disfrutar en la app de Flow</li>
             </ul>
-            <a href="#" class="learn-more">Conocer más ></a>
-            <p class="footer-note">¡Incluye WhatsApp gratis y llamadas ilimitadas!</p>
+            <a href="#" class="learn-more">@translator.GetTraduction(service, "Knowmore")</a>
+            <p class="footer-note">@translator.GetTraduction(service, "IncludeText")</p>
         </div>
     </div>
     <footer>

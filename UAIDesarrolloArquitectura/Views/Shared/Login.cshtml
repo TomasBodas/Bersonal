@@ -2,7 +2,22 @@
 <!DOCTYPE html>
 <html lang="en">
 @model UAIDesarrolloArquitectura.Models.ViewModel.LoginViewModel
-@{ ViewBag.Title = "Login"; }
+@{ 
+    ViewBag.Title = "Login";
+    Services.Idioma.Translator translator = new Services.Idioma.Translator();
+    UAIDesarrolloArquitectura.Controllers.IdiomaController lC = new UAIDesarrolloArquitectura.Controllers.IdiomaController();
+    lC.InitializeController();
+    Services.LanguageService service = lC.GetService();
+    service.Susbcribe(translator);
+    if (Services.SessionManager.IsLogged())
+    {
+        service.ChangeLanguage((Services.SessionManager.GetInstance.User.LanguageId).ToString());
+    }
+    else
+    {
+        if (!service.SelectedLanguageExists()) { service.ChangeLanguage("1"); }
+    }
+}
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -92,11 +107,11 @@
         </div>
         <div>
             @Html.LabelFor(m => m.Password)
-            @Html.PasswordFor(m => m.Password, new { @placeholder = "Contraseña", @required = "required" })
+            @Html.PasswordFor(m => m.Password, new { @placeholder = @translator.GetTraduction(service, "Password"), @required = "required" })
             @Html.ValidationMessageFor(m => m.Password)
         </div>
         @Html.ValidationMessage("MissingUser", new { @class = "validation-error" })
-        <button type="submit">Iniciar Sesion</button>
+    <button type="submit">@translator.GetTraduction(service, "Login")</button>
         <br />
         @Html.ActionLink("Registrarse", "Register", "Register")
     </form>
