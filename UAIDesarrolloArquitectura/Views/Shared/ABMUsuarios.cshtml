@@ -82,6 +82,8 @@
                 <a style="display:none;" id="abmusuarios" href="#">@translator.GetTraduction(service, "ManageUser")</a>
                 <a style="display:none;" id="restore" href="@Url.Action("BackupRestore", "Backup")">@translator.GetTraduction(service, "Restoredb")</a>
                 <a style="display:none;" id="1001" href="@Url.Action("ABMIdioma", "Idioma")">@translator.GetTraduction(service, "ManageLanguage")</a>
+                <a style="display:none;" id="crearperfiles" href="@Url.Action("CrearPerfiles", "CrearPerfiles")">Crear Perfiles</a>
+                <a style="display:none;" id="asignarperfiles" href="@Url.Action("AsignarPerfil", "AsignarPerfil")">Asignar Perfiles</a>
                 <script type="text/javascript">
                      @foreach (string permission in Services.SessionManager.GetInstance.User.permissionList)
                      {

@@ -192,5 +192,26 @@ namespace DAL
                 updateUserQueryCommand.ExecuteNonQuery();
             }
         }
+        public void AssignProfile(string perfil, string usuario)
+        {
+            int profileID = 0;
+            using (SqlConnection connection = new SqlConnection(CONNECTION_STRING))
+            {
+                string query = $"SELECT * FROM perfil where nombre='{perfil}'";
+                SqlCommand selectCommand = new SqlCommand(query, connection);
+                connection.Open();
+                using (SqlDataReader reader = selectCommand.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        profileID = reader.GetInt32(0);
+                    }
+                }
+                query = $"UPDATE usuario SET id_perfil='{profileID}' WHERE nombre='{usuario}'";
+                SqlCommand updateUserQueryCommand = new SqlCommand(query, connection);
+                updateUserQueryCommand.ExecuteNonQuery();
+            }
+        }
+           
     }
 }
