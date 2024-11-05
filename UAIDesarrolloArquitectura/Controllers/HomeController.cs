@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using UAIDesarrolloArquitectura.ServicePrecios;
 
 namespace UAIDesarrolloArquitectura.Controllers
 {
@@ -23,6 +24,15 @@ namespace UAIDesarrolloArquitectura.Controllers
         }
         public ActionResult Plans()
         {
+            // Crear una instancia del cliente del servicio web
+            var servicioPrecios = new ObtPrecios(); // Asegúrate de que 'ObtPrecios' sea el nombre correcto del proxy
+
+            // Llamar al método del WebService para obtener los precios
+            var precios = servicioPrecios.ObtenerPrecios(); // Llama al método directamente
+
+            // Pasar los precios a la vista usando ViewBag
+            ViewBag.Precios = precios;
+
             return View("Plans");
         }
         public ActionResult Logout()

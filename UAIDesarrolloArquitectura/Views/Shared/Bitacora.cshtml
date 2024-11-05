@@ -83,13 +83,16 @@
         <a href="https://es.euronews.com/green">TV</a>
     </nav>
     <div class="contenedor-tabla">
-        /* Filtrar por fecha y/o módulo:
         @using (Html.BeginForm("Bitacora", "Bitacora", FormMethod.Post))
         {
             @Html.Label("Desde ")<input type="date" name="fechaInicio" required />@Html.Label("hasta ")<input type="date" name="fechaFinal" required />
             @Html.Label("Módulo ")<input type="text" name="modulo" required />
             <button type="submit">Filtrar</button>
-        }*/
+        }
+        @using (Html.BeginForm("ExportXML", "Bitacora", FormMethod.Post))
+        {
+            <button type="submit">Exportar XML</button>
+        }
         <table>
             <thead>
                 <tr>

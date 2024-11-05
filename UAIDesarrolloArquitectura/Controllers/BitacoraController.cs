@@ -9,6 +9,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.WebPages;
 using System.Windows;
+using System.Xml.Linq;
 using UAIDesarrolloArquitectura.Models.ViewModel;
 
 
@@ -53,6 +54,33 @@ namespace UAIDesarrolloArquitectura.Controllers
                 log.User = PasswordEncrypter.DecryptData(log.User);
             }
             return View(list);
+        }
+
+        [HttpPost]
+        public ActionResult ExportXML()
+        {
+            List<Log> logs = dAL_Log.getLog();
+
+            // Crear el documento XML
+            var xmlDocument = new XDocument(
+                new XElement("Logs",
+                    logs.Select(log =>
+                        new XElement("Log",
+                            new XElement("ID", log.id),
+                            new XElement("Usuario", log.User),
+                            new XElement("Fecha", log.Fecha),
+                            new XElement("Modulo", log.Modulo),
+                            new XElement("Descripcion", log.Descripcion)
+                        )
+                    )
+                )
+            );
+
+            // Convertir el documento XML a una cadena de bytes
+            var xmlBytes = System.Text.Encoding.UTF8.GetBytes(xmlDocument.ToString());
+
+            // Devolver el archivo XML como respuesta para descargar
+            return File(xmlBytes, "application/xml", "Bitacora.xml");
         }
     }
 }

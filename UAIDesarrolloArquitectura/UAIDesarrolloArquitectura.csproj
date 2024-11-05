@@ -49,6 +49,8 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -120,6 +122,11 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Connected Services\ServicePrecios\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
     <Compile Include="Controllers\AsignarPerfilController.cs" />
     <Compile Include="Controllers\CrearPerfilesController.cs" />
     <Compile Include="Controllers\ABMController.cs" />
@@ -136,12 +143,23 @@
     <Compile Include="Models\ViewModel\CrearPerfilViewModel.cs" />
     <Compile Include="Models\ViewModel\BackupViewModel.cs" />
     <Compile Include="Models\ViewModel\LoginViewModel.cs" />
+    <Compile Include="ObtPrecios.asmx.cs">
+      <DependentUpon>ObtPrecios.asmx</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Models\ViewModel\PerfilesViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="assets\Bersonal.png" />
     <Content Include="assets\user-image-with-black-background-svgrepo-com.svg" />
+    <None Include="Connected Services\ServicePrecios\ObtPrecios.disco" />
+    <None Include="Connected Services\ServicePrecios\configuration91.svcinfo" />
+    <None Include="Connected Services\ServicePrecios\configuration.svcinfo" />
+    <None Include="Connected Services\ServicePrecios\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
@@ -150,9 +168,17 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="ObtPrecios.asmx" />
     <Content Include="script.sql" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <None Include="Connected Services\ServicePrecios\ObtPrecios.wsdl" />
+    <Content Include="Connected Services\ServicePrecios\UAIDesarrolloArquitectura.ServicePrecios.ArrayOfDecimal.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Connected Services\ServicePrecios\UAIDesarrolloArquitectura.ServicePrecios.ObtenerPreciosResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
@@ -213,6 +239,12 @@
       <Project>{059cf10e-e63c-40d1-9d29-ade4b642b095}</Project>
       <Name>Services</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Connected Services\ServicePrecios\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
