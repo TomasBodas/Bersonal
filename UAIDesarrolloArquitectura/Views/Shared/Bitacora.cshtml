@@ -91,7 +91,7 @@
         }
         else
         {
-            <a href="@Url.Action("Login", "Login")">@translator.GetTraduction(service, "Login")</a>
+        <a href="@Url.Action("Login", "Login")">@translator.GetTraduction(service, "Login")</a>
         }
         <form>
             <select id="option" onchange="enviarValor()">
@@ -129,7 +129,7 @@
                 @Html.Label(translator.GetTraduction(service, "Since"))<input type="date" id="fechaInicio" name="fechaInicio" />
                 @Html.Label(translator.GetTraduction(service, "Until"))<input type="date" id="fechaFinal" name="fechaFinal" />
                 @Html.Label(translator.GetTraduction(service, "Module"))<input type="text" id="modulo " name="modulo" />
-                <button type="submit">@translator.GetTraduction(service, "FilterText")</button>
+            <button type="submit">@translator.GetTraduction(service, "FilterText")</button>
             </div>
         }
         <table>

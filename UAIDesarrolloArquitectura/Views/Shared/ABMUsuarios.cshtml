@@ -141,32 +141,32 @@
         </div>
         <button class="btnRemover" type="submit">@translator.GetTraduction(service, "CreateUser")</button>
     </form>
-    <br />
-    <div class="contenedor-tabla">
-        <table>
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>@translator.GetTraduction(service, "Name")</th>
-                    <th>@translator.GetTraduction(service, "Lastname")</th>
-                    <th>DNI</th>
-                    <th>Email</th>
-                    <th></th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var user in Model)
-                {
+        <br />
+        <div class="contenedor-tabla">
+            <table>
+                <thead>
                     <tr>
-                        <form action="@Url.Action("UpdateUser", "ABM")" method="post">
-                        <td><input type="hidden" name="Id" value="@user.id" />@user.id</td>
-                        <td><input type="text" name="Name" value="@user.Name" /></td>
-                        <td><input type="text" name="Surname" value="@user.Surname" /></td>
-                        <td><input type="text" name="DNI" value="@user.DNI" /></td>
-                        <td><input type="text" name="Email" value="@user.Email" /></td>
-                        <td><button class="btnRemover" type="submit">@translator.GetTraduction(service, "Modify")</button></td>
-                        </form>
+                        <th>ID</th>
+                        <th>@translator.GetTraduction(service, "Name")</th>
+                        <th>@translator.GetTraduction(service, "Lastname")</th>
+                        <th>DNI</th>
+                        <th>Email</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var user in Model)
+                    {
+                        <tr>
+                            <form action="@Url.Action("UpdateUser", "ABM")" method="post">
+                            <td><input type="hidden" name="Id" value="@user.id" />@user.id</td>
+                            <td><input type="text" name="Name" value="@user.Name" /></td>
+                            <td><input type="text" name="Surname" value="@user.Surname" /></td>
+                            <td><input type="text" name="DNI" value="@user.DNI" /></td>
+                            <td><input type="text" name="Email" value="@user.Email" /></td>
+                            <td><button class="btnRemover" type="submit">@translator.GetTraduction(service, "Modify")</button></td>
+                            </form>
                         <td>
                             <form action="@Url.Action("RemoveUser", "ABM")" method="post">
                                 <input type="hidden" name="Id" value="@user.id" />
