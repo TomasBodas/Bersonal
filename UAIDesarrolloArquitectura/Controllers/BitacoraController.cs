@@ -36,19 +36,23 @@ namespace UAIDesarrolloArquitectura.Controllers
             else return RedirectToAction("Index", "Home");
         }
         [HttpPost]
-        public ActionResult Bitacora(DateTime Fechainicio, DateTime Fechafinal, string Modulo = null)
+        public ActionResult Bitacora(DateTime? Fechainicio, DateTime? Fechafinal, string Modulo = null)
         {
+            //lista de todos los registros
             List<Log> list = dAL_Log.getLog();
-            //List<Log> filteredList = new List<Log>();
-            if (Fechainicio == null || Fechafinal == null && Modulo == null) return View(list);
+            //si se ingresaron fechas
             if (Fechainicio != null && Fechafinal != null)
             {
-                list = list.Where(p => p.Fecha >= Fechainicio && p.Fecha <= Fechafinal).ToList();
+                //nueva lista de registros desde una fecha hasta la otra
+                list = list.Where(p => p.Fecha.Date >= Fechainicio.Value.Date && p.Fecha.Date <= Fechafinal.Value.Date).ToList();
             }
+            //si se ingreso el modulo
             if (Modulo != null && !Modulo.IsEmpty())
             {
+                //nueva lista de registros por modulo
                 list = list.Where(p => p.Modulo == Modulo).ToList();
             }
+            //desencriptamos los emails
             foreach (Log log in list)
             {
                 log.User = PasswordEncrypter.DecryptData(log.User);

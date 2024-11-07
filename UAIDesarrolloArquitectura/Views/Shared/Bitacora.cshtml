@@ -30,7 +30,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Chivo:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <style>
         .contenedor-tabla {
-            max-height: 400px;
+            max-height: 550px;
             overflow-y: auto;
             border: 1px solid #ddd;
         }
@@ -50,6 +50,14 @@
         th {
             background-color: #f2f2f2;
         }
+
+        .contenedor-filtros {
+            display: flex;
+            justify-content: center;
+            align-content: center;
+            gap: 5px;
+            margin: 10px;
+        }
     </style>
 </head>
 
@@ -64,8 +72,8 @@
                 <a style="display:none;" id="abmusuarios" href="@Url.Action("ABMUsuarios", "ABM")">@translator.GetTraduction(service, "ManageUser")</a>
                 <a style="display:none;" id="restore" href="@Url.Action("BackupRestore", "Backup")">@translator.GetTraduction(service, "Restoredb")</a>
                 <a style="display:none;" id="1001" href="@Url.Action("ABMIdioma", "Idioma")">@translator.GetTraduction(service, "ManageLanguage")</a>
-                <a style="display:none;" id="crearperfiles" href="@Url.Action("CrearPerfiles", "CrearPerfiles")">Crear Perfiles</a>
-                <a style="display:none;" id="asignarperfiles" href="@Url.Action("AsignarPerfil", "AsignarPerfil")">Asignar Perfiles</a>
+                <a style="display:none;" id="crearperfiles" href="@Url.Action("CrearPerfiles", "CrearPerfiles")">@translator.GetTraduction(service, "CreateProfile")</a>
+                <a style="display:none;" id="asignarperfiles" href="@Url.Action("AsignarPerfil", "AsignarPerfil")">@translator.GetTraduction(service, "AssignProfile")</a>
                 <script type="text/javascript">
                      @foreach (string permission in Services.SessionManager.GetInstance.User.permissionList)
                      {
@@ -83,8 +91,25 @@
         }
         else
         {
-        <a href="@Url.Action("Login", "Login")">@translator.GetTraduction(service, "Login")</a>
+            <a href="@Url.Action("Login", "Login")">@translator.GetTraduction(service, "Login")</a>
         }
+        <form>
+            <select id="option" onchange="enviarValor()">
+                @foreach (Services.Idioma.Language l in service.GetLanguages())
+                {
+
+                    if (service.SelectedLanguage.Id == l.Id)
+                    {
+                        <option value="@l.Id" selected="selected">@translator.GetTraduction(service, l.Name)</option>
+                    }
+
+                    else
+                    {
+                        <option value="@l.Id">@translator.GetTraduction(service, l.Name)</option>
+                    }
+                }
+            </select>
+        </form>
     </nav>
     <header>
         <h1>Bersonal</h1>
@@ -98,11 +123,14 @@
     </nav>
     <div class="contenedor-tabla">
         @translator.GetTraduction(service, "Filter"):
-        @using (Html.BeginForm("Bitacora", "Bitacora", FormMethod.Post))
+        @using (Html.BeginForm("Bitacora", "Bitacora", FormMethod.Post, new { id = "formularioFiltros" }))
         {
-            @Html.Label(translator.GetTraduction(service, "Since"))<input type="date" name="fechaInicio" required />@Html.Label(translator.GetTraduction(service, "Until"))<input type="date" name="fechaFinal" required />
-            @Html.Label(translator.GetTraduction(service, "Module"))<input type="text" name="modulo" required />
-            <button type="submit">@translator.GetTraduction(service, "FilterText")</button>
+            <div class="contenedor-filtros">
+                @Html.Label(translator.GetTraduction(service, "Since"))<input type="date" id="fechaInicio" name="fechaInicio" />
+                @Html.Label(translator.GetTraduction(service, "Until"))<input type="date" id="fechaFinal" name="fechaFinal" />
+                @Html.Label(translator.GetTraduction(service, "Module"))<input type="text" id="modulo " name="modulo" />
+                <button type="submit">@translator.GetTraduction(service, "FilterText")</button>
+            </div>
         }
         <table>
             <thead>
@@ -129,6 +157,7 @@
                 }
             </tbody>
         </table>
+        <script src="~/Scripts/scriptIdioma.js"></script>
     </div>
 </body>
 </html>

@@ -4,6 +4,7 @@ using Services;
 using System.Collections.Generic;
 using System.Web.Mvc;
 using UAIDesarrolloArquitectura.Models;
+using BLL;
 
 namespace UAIDesarrolloArquitectura.Controllers
 {
@@ -36,12 +37,14 @@ namespace UAIDesarrolloArquitectura.Controllers
             string valorSeleccionado = data.Valor;
             string urlActual = data.Url;
             urlActual = urlActual.Replace("?", "");
+            BLL_CheckDigitsManager checkDigitsManager = new BLL_CheckDigitsManager();
 
             if (SessionManager.IsLogged())
             {
                 SessionManager.GetInstance.User.LanguageId = int.Parse(valorSeleccionado);
                 DAL_User dal_user = new DAL_User();
                 dal_user.UpdateUser(SessionManager.GetInstance.User);
+                checkDigitsManager.SetCheckDigits();
             }
 
             service.ChangeLanguage(valorSeleccionado);

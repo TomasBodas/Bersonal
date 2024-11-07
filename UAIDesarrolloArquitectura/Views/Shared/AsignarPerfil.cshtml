@@ -2,6 +2,22 @@
 <!DOCTYPE html>
 
 <html>
+@{
+    ViewBag.Title = "AsignarPerfil";
+    Services.Idioma.Translator translator = new Services.Idioma.Translator();
+    UAIDesarrolloArquitectura.Controllers.IdiomaController lC = new UAIDesarrolloArquitectura.Controllers.IdiomaController();
+    lC.InitializeController();
+    Services.LanguageService service = lC.GetService();
+    service.Susbcribe(translator);
+    if (Services.SessionManager.IsLogged())
+    {
+        service.ChangeLanguage((Services.SessionManager.GetInstance.User.LanguageId).ToString());
+    }
+    else
+    {
+        if (!service.SelectedLanguageExists()) { service.ChangeLanguage("1"); }
+    }
+}
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -86,13 +102,14 @@
         @if (Services.SessionManager.IsLogged())
         {
             <div class="opciones">
-                <a href="@Url.Action("Logout", "Home")">Cerrar Sesión</a>
-                <a href="@Url.Action("Index", "Home")">Inicio</a>
-                <a style="display:none;" id="bitacora" href="@Url.Action("Bitacora", "Bitacora")">Bitácora</a>
-                <a style="display:none;" id="abmusuarios" href="@Url.Action("ABMUsuarios", "ABM")">Gestión de usuarios</a>
-                <a style="display:none;" id="restore" href="@Url.Action("BackupRestore", "Backup")">Respaldar/Restaurar Base de Datos</a>
-                <a style="display:none;" id="crearperfiles" href="@Url.Action("CrearPerfiles", "CrearPerfiles")">Crear Perfiles</a>
-                <a href="#">Asignar Perfiles</a>
+                <a href="@Url.Action("Logout", "Home")">@translator.GetTraduction(service, "Logout")</a>
+                <a href="@Url.Action("Index", "Home")">@translator.GetTraduction(service, "Main")</a>
+                <a style="display:none;" id="bitacora" href="@Url.Action("Bitacora", "Bitacora")">@translator.GetTraduction(service, "Log")</a>
+                <a style="display:none;" id="abmusuarios" href="#">@translator.GetTraduction(service, "ManageUser")</a>
+                <a style="display:none;" id="restore" href="@Url.Action("BackupRestore", "Backup")">@translator.GetTraduction(service, "Restoredb")</a>
+                <a style="display:none;" id="1001" href="@Url.Action("ABMIdioma", "Idioma")">@translator.GetTraduction(service, "ManageLanguage")</a>
+                <a style="display:none;" id="crearperfiles" href="@Url.Action("CrearPerfiles", "CrearPerfiles")">@translator.GetTraduction(service, "CreateProfile")</a>
+                <a href="#">@translator.GetTraduction(service, "AssignProfile")</a>
                 <script type="text/javascript">
              @foreach (string permission in Services.SessionManager.GetInstance.User.permissionList)
              {
@@ -101,32 +118,49 @@
                  </text>
              }
                 </script>
-                <a href="@Url.Action("Carrito", "Carrito")">Carrito</a>
+                <a href="@Url.Action("Carrito", "Carrito")">@translator.GetTraduction(service, "Cart")</a>
             </div>
             <div class="opciones">
                 <img src="~/assets/user-image-with-black-background-svgrepo-com.svg" width="30px" />
-                <p style='color: black; white-space: nowrap;'>Bienvenido, @Services.SessionManager.GetInstance.User.Name</p>
+                <p style='color: black; white-space: nowrap;'>@translator.GetTraduction(service, "Welcome"), @Services.SessionManager.GetInstance.User.Name</p>
             </div>
         }
         else
         {
-            <a href="@Url.Action("Login", "Login")">Iniciar Sesión</a>
+            <a href="@Url.Action("Login", "Login")">@translator.GetTraduction(service, "Login")</a>
         }
+        <form>
+            <select id="option" onchange="enviarValor()">
+                @foreach (Services.Idioma.Language l in service.GetLanguages())
+                {
+
+                    if (service.SelectedLanguage.Id == l.Id)
+                    {
+                        <option value="@l.Id" selected="selected">@translator.GetTraduction(service, l.Name)</option>
+                    }
+
+                    else
+                    {
+                        <option value="@l.Id">@translator.GetTraduction(service, l.Name)</option>
+                    }
+                }
+            </select>
+        </form>
     </nav>
     <header>
         <h1>Bersonal</h1>
     </header>
     <nav>
         <a @Url.Action("Index", "Home")>Internet</a>
-        <a href="https://es.euronews.com/noticias/internacional">Tienda</a>
-        <a href="https://es.euronews.com/business">Portabilidad</a>
-        <a href="@Url.Action("Plans", "Home")">Planes</a>
+        <a href="https://es.euronews.com/noticias/internacional">@translator.GetTraduction(service, "Store")</a>
+        <a href="https://es.euronews.com/business">@translator.GetTraduction(service, "Portability")</a>
+        <a href="@Url.Action("Plans", "Home")">@translator.GetTraduction(service, "Plans")</a>
         <a href="https://es.euronews.com/green">TV</a>
     </nav>
     <div class="container">
         <div class="list-container">
             <div class="list-box">
-                <h3>Perfiles</h3>
+                <h3>@translator.GetTraduction(service, "Profiles")</h3>
                 <ul id="listaPerfiles" class="lista">
                     @foreach (var profile in Model.Perfiles)
                     {
@@ -135,7 +169,7 @@
                 </ul>
             </div>
             <div class="list-box">
-                <h3>Usuarios</h3>
+                <h3>@translator.GetTraduction(service, "Users")</h3>
                 <ul id="listaUsuarios" class="lista">
                     @foreach (var user in Model.Usuarios)
                     {
@@ -146,7 +180,7 @@
         </div>
 
         <div class="button-container">
-            <button id="btnAsignarPerfil">Asignar perfil</button>
+            <button id="btnAsignarPerfil">@translator.GetTraduction(service, "AssignProfile2")</button>
         </div>
     </div>
     <script>
@@ -202,5 +236,6 @@
         });
 
     </script>
+    <script src="~/Scripts/scriptIdioma.js"></script>
 </body>
 </html>
